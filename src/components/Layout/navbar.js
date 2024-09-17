@@ -12,7 +12,6 @@ function classNames (...classes) {
 export const Navbar = () => {
   const session = useUser()
   const router = useRouter()
-  console.log(router)
 
   const hrNavigation = [
     {
