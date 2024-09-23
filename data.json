@@ -1,0 +1,22 @@
+{
+    "title": "Inception",
+    "ratings": 4.8,
+    "cast": [
+      { "name": "Leonardo DiCaprio", "role": "Actor" },
+      { "name": "Elliot Page", "role": "Actress" },
+      { "name": "Christopher Nolan", "role": "Director" },
+      { "name": "Emma Thomas", "role": "Producer" },
+      { "name": "Hans Zimmer", "role": "Composer" }
+    ],
+    "description": "A skilled thief, who commits corporate espionage by infiltrating the subconscious of his targets, is offered a chance to have his past crimes erased in exchange for the implantation of another person's idea into a target's subconscious.",
+    "isPlaying": true,
+    "image": "https://example.com/inception.jpg",
+    "trailer": "https://www.youtube.com/watch?v=8hP9D6kZseM",
+    "releaseDate": "2010-07-16T00:00:00.000Z",
+    "genre": ["Action", "Sci-Fi", "Thriller"],
+    "duration": 148,
+    "isVisible": true,
+    "certificate": "PG-13",
+    "createdAt": "2024-09-23T10:00:00.000Z",
+    "updatedAt": "2024-09-23T10:00:00.000Z"
+  }
