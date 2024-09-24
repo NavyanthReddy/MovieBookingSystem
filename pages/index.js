@@ -27,22 +27,25 @@ const Home = () => {
     )
   }, [nowPlayingMovies, movieSearch])
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <div className='mt-[10vh]'>Loading...</div>
+
+  const isSearching = movieSearch !== ''
 
   return (
-    <main className='mt-10'>
-      {searchedMovies.length > 0 ? (
-        <MovieList title='Search Results' movielist={searchedMovies} />
+    <main className='mt-[10vh]'>
+      {isSearching ? (
+        searchedMovies.length > 0 ? (
+          <MovieList title='Search Results' movielist={searchedMovies} />
+        ) : (
+          <div className='mt-4 text-gray-500'>
+            No results found for "{movieSearch}"
+          </div>
+        )
       ) : (
         <>
           <MovieList title='Now Playing' movielist={nowPlayingMovies} />
           <MovieList title='Coming Soon' movielist={comingSoonMovies} />
         </>
-      )}
-      {searchedMovies.length === 0 && movieSearch && (
-        <div className='mt-4 text-gray-500'>
-          No results found for "{movieSearch}"
-        </div>
       )}
     </main>
   )
