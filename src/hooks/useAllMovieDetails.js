@@ -5,7 +5,6 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 export const useAllMovieDetails = () => {
   const { data, error } = useSWR(`/api/movies/`, fetcher)
-  console.log(data)
   return {
     movies: data?.details,
     isLoading: !error && !data,

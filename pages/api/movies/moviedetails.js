@@ -15,6 +15,8 @@ const searchMovie = async (req, res) => {
 
     const { movieId } = req.query
 
+    console.log(123, movieId)
+
     const movieDetails = await Movie.findById(movieId)
 
     if (movieDetails) {
