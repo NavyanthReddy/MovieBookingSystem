@@ -4,6 +4,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
 import { useUser } from '../../lib/hooks'
+import { InputWithIcon } from '../Reusables/Forms/InputWithIcon'
 
 function classNames (...classes) {
   return classes.filter(Boolean).join(' ')
@@ -110,6 +111,7 @@ export const Navbar = () => {
                 </div>
               </div>
               <div className='flex items-center'>
+                <InputWithIcon />
                 <div className='hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center'>
                   {/* Profile dropdown */}
                   {session ? (

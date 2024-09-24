@@ -7,6 +7,7 @@ export function ModalContextProvider ({ children }) {
   const [isEdit, setIsEdit] = useState(false)
   const [form, setForm] = useState('')
   const [loading, setLoading] = useState(false)
+  const [movieSearch, setMovieSearch] = useState('')
 
   function closeModal () {
     setIsOpen(false)
@@ -24,7 +25,9 @@ export function ModalContextProvider ({ children }) {
     isEdit,
     setIsEdit,
     loading,
-    setLoading
+    setLoading,
+    movieSearch,
+    setMovieSearch
   }
   return <ModalContext.Provider value={state}>{children}</ModalContext.Provider>
 }
