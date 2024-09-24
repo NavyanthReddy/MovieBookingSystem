@@ -1,16 +1,26 @@
 import React from 'react'
 import { MovieList } from '../src/components/HomePage/MovieList'
 import { useAllMovieDetails } from '../src/hooks/useAllMovieDetails'
-import { InputWithIcon } from '../src/components/Reusables/Forms/InputWithIcon'
 
 const Home = () => {
-  const { movies } = useAllMovieDetails()
+  const { movies, isLoading } = useAllMovieDetails()
+  const currentDate = new Date()
+
+  const nowPlayingMovies = movies?.filter(
+    movie => movie.isVisible && new Date(movie.releaseDate) <= currentDate
+  )
+
+  const comingSoonMovies = movies?.filter(
+    movie => movie.isVisible && new Date(movie.releaseDate) > currentDate
+  )
+
+  if (isLoading) return <>Loading...</>
+
   return (
     <main className='mt-10'>
-      <div className='mx-10 mt-24 flex justify-end'>
-        <InputWithIcon />
-      </div>
-      <MovieList title={'Now Playing'} movielist={movies} />
+      <MovieList title={'Now Playing'} movielist={nowPlayingMovies} />
+
+      <MovieList title={'Coming Soon'} movielist={comingSoonMovies} />
     </main>
   )
 }

@@ -28,7 +28,7 @@ export const MovieList = ({ title, movielist }) => {
                 />
               </div>
               <div className='mt-4 flex justify-between'>
-                <div>
+                <div className='w-[70%]'>
                   <h3 className='text-sm font-semibold text-gray-700'>
                     <Link href={`movieoverview/${movie?._id}`}>
                       <span aria-hidden='true' className='absolute inset-0' />
@@ -36,11 +36,11 @@ export const MovieList = ({ title, movielist }) => {
                     </Link>
                   </h3>
                 </div>
-                <div className='flex'>
+                <div className='grid grid-cols-2'>
                   <Image src={'/icons/popcorn.png'} height='10' width='20' />
-                  <p className='ml-1 text-sm font-medium text-gray-900'>
+                  <span className='ml-1 text-sm font-medium text-gray-900'>
                     {movie?.ratings}
-                  </p>
+                  </span>
                 </div>
               </div>
             </div>

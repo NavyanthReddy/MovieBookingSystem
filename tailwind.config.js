@@ -10,7 +10,11 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   theme: {
-    extend: {}
+    extend: {
+      gridTemplateRows: {
+        '[auto,auto,1fr]': 'auto auto 1fr'
+      }
+    }
   },
-  plugins: [forms]
+  plugins: [forms, require('@tailwindcss/aspect-ratio')]
 }

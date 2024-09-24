@@ -1,22 +1,201 @@
-{
-    "title": "Inception",
-    "ratings": 4.8,
-    "cast": [
-      { "name": "Leonardo DiCaprio", "role": "Actor" },
-      { "name": "Elliot Page", "role": "Actress" },
-      { "name": "Christopher Nolan", "role": "Director" },
-      { "name": "Emma Thomas", "role": "Producer" },
-      { "name": "Hans Zimmer", "role": "Composer" }
-    ],
-    "description": "A skilled thief, who commits corporate espionage by infiltrating the subconscious of his targets, is offered a chance to have his past crimes erased in exchange for the implantation of another person's idea into a target's subconscious.",
-    "isPlaying": true,
-    "image": "https://example.com/inception.jpg",
-    "trailer": "https://www.youtube.com/watch?v=8hP9D6kZseM",
-    "releaseDate": "2010-07-16T00:00:00.000Z",
-    "genre": ["Action", "Sci-Fi", "Thriller"],
-    "duration": 148,
-    "isVisible": true,
-    "certificate": "PG-13",
-    "createdAt": "2024-09-23T10:00:00.000Z",
-    "updatedAt": "2024-09-23T10:00:00.000Z"
-  }
+[
+    {
+      "title": "The Dark Knight",
+      "ratings": 4.9,
+      "cast": [
+        { "name": "Christian Bale", "role": "Actor" },
+        { "name": "Heath Ledger", "role": "Actor" },
+        { "name": "Christopher Nolan", "role": "Director" },
+        { "name": "Emma Thomas", "role": "Producer" },
+        { "name": "Hans Zimmer", "role": "Composer" }
+      ],
+      "description": "Batman faces off against the Joker, a criminal mastermind wreaking havoc in Gotham City.",
+      "isPlaying": false,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/110469/RT25_AMC_Poster_TheDarkKnight.png",
+      "trailer": "EXeTwQWrcwY",
+      "releaseDate": "2008-07-18T00:00:00.000Z",
+      "genre": ["Action", "Crime", "Drama"],
+      "duration": 152,
+      "isVisible": true,
+      "certificate": "PG-13",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "Avatar",
+      "ratings": 4.3,
+      "cast": [
+        { "name": "Sam Worthington", "role": "Actor" },
+        { "name": "Zoe Saldana", "role": "Actress" },
+        { "name": "James Cameron", "role": "Director" },
+        { "name": "Jon Landau", "role": "Producer" },
+        { "name": "James Horner", "role": "Composer" }
+      ],
+      "description": "A paraplegic Marine is sent to the moon Pandora, where he joins an indigenous race to protect their land.",
+      "isPlaying": false,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/228780/AVATAR_RERLS_1SHT_DIGITAL_sRGB_V7.jpg",
+      "trailer": "5PSNL1qE6VY",
+      "releaseDate": "2009-12-18T00:00:00.000Z",
+      "genre": ["Action", "Adventure", "Sci-Fi"],
+      "duration": 162,
+      "isVisible": true,
+      "certificate": "PG-13",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "Interstellar",
+      "ratings": 4.6,
+      "cast": [
+        { "name": "Matthew McConaughey", "role": "Actor" },
+        { "name": "Anne Hathaway", "role": "Actress" },
+        { "name": "Christopher Nolan", "role": "Director" },
+        { "name": "Emma Thomas", "role": "Producer" },
+        { "name": "Hans Zimmer", "role": "Composer" }
+      ],
+      "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+      "isPlaying": true,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/163452/interstellar_poster2.jpg",
+      "trailer": "zSWdZVtXT7E",
+      "releaseDate": "2014-11-07T00:00:00.000Z",
+      "genre": ["Adventure", "Drama", "Sci-Fi"],
+      "duration": 169,
+      "isVisible": true,
+      "certificate": "PG-13",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "The Matrix",
+      "ratings": 4.7,
+      "cast": [
+        { "name": "Keanu Reeves", "role": "Actor" },
+        { "name": "Carrie-Anne Moss", "role": "Actress" },
+        { "name": "Lana Wachowski", "role": "Director" },
+        { "name": "Joel Silver", "role": "Producer" },
+        { "name": "Don Davis", "role": "Composer" }
+      ],
+      "description": "A computer hacker learns about the true nature of his reality and his role in the war against its controllers.",
+      "isPlaying": true,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/226448/Matrix4K_V_DD_KA_TT_2000x3000_300dpi_EN-2D-Theaters.jpg",
+      "trailer": "vKQi3bBA1y8",
+      "releaseDate": "1999-03-31T00:00:00.000Z",
+      "genre": ["Action", "Sci-Fi"],
+      "duration": 136,
+      "isVisible": true,
+      "certificate": "R",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "Pulp Fiction",
+      "ratings": 4.9,
+      "cast": [
+        { "name": "John Travolta", "role": "Actor" },
+        { "name": "Uma Thurman", "role": "Actress" },
+        { "name": "Quentin Tarantino", "role": "Director" },
+        { "name": "Lawrence Bender", "role": "Producer" },
+        { "name": "Quentin Tarantino", "role": "Writer" }
+      ],
+      "description": "The lives of two mob hitmen, a boxer, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+      "isPlaying": false,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/394/pulpfiction_lg.jpg",
+      "trailer": "s7EdQ4FqbhY",
+      "releaseDate": "1994-10-14T00:00:00.000Z",
+      "genre": ["Crime", "Drama"],
+      "duration": 154,
+      "isVisible": true,
+      "certificate": "R",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "The Lord of the Rings: The Return of the King",
+      "ratings": 4.9,
+      "cast": [
+        { "name": "Elijah Wood", "role": "Actor" },
+        { "name": "Ian McKellen", "role": "Actor" },
+        { "name": "Peter Jackson", "role": "Director" },
+        { "name": "Fran Walsh", "role": "Producer" },
+        { "name": "Howard Shore", "role": "Composer" }
+      ],
+      "description": "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom.",
+      "isPlaying": false,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/231104/RETURNOFTHEKING-20THANNIV.jpg",
+      "trailer": "r5X-hFf6Bwo",
+      "releaseDate": "2003-12-17T00:00:00.000Z",
+      "genre": ["Adventure", "Drama", "Fantasy"],
+      "duration": 201,
+      "isVisible": true,
+      "certificate": "PG-13",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "Titanic",
+      "ratings": 4.6,
+      "cast": [
+        { "name": "Leonardo DiCaprio", "role": "Actor" },
+        { "name": "Kate Winslet", "role": "Actress" },
+        { "name": "James Cameron", "role": "Director" },
+        { "name": "Jon Landau", "role": "Producer" },
+        { "name": "James Horner", "role": "Composer" }
+      ],
+      "description": "A young couple falls in love aboard the ill-fated R.M.S. Titanic.",
+      "isPlaying": true,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/230782/TTNC25_Poster%20copy.jpg",
+      "trailer": "2e-eXJ6HgkQ",
+      "releaseDate": "1997-12-19T00:00:00.000Z",
+      "genre": ["Drama", "Romance"],
+      "duration": 195,
+      "isVisible": true,
+      "certificate": "PG-13",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "Star Wars: Episode IV - A New Hope",
+      "ratings": 4.7,
+      "cast": [
+        { "name": "Mark Hamill", "role": "Actor" },
+        { "name": "Harrison Ford", "role": "Actor" },
+        { "name": "George Lucas", "role": "Director" },
+        { "name": "Gary Kurtz", "role": "Producer" },
+        { "name": "John Williams", "role": "Composer" }
+      ],
+      "description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, and two droids to save the galaxy from the Empire.",
+      "isPlaying": false,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/",
+      "trailer": "vZ734NWnAHA",
+      "releaseDate": "1977-05-25T00:00:00.000Z",
+      "genre": ["Action", "Adventure", "Fantasy"],
+      "duration": 121,
+      "isVisible": true,
+      "certificate": "PG",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    },
+    {
+      "title": "Jurassic Park",
+      "ratings": 4.5,
+      "cast": [
+        { "name": "Sam Neill", "role": "Actor" },
+        { "name": "Laura Dern", "role": "Actress" },
+        { "name": "Steven Spielberg", "role": "Director" },
+        { "name": "Kathleen Kennedy", "role": "Producer" },
+        { "name": "John Williams", "role": "Composer" }
+      ],
+      "description": "A pragmatic paleontologist visiting an almost complete theme park is tasked with protecting a couple of kids after a power failure causes the park's cloned dinosaurs to run loose.",
+      "isPlaying": true,
+      "image": "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster--dark-mode.png/0/images/masterrepository/Fandango/232710/jurassicpark-posterart.jpg",
+      "trailer": "lc0UehYemQA",
+      "releaseDate": "1993-06-11T00:00:00.000Z",
+      "genre": ["Adventure", "Sci-Fi", "Thriller"],
+      "duration": 127,
+      "isVisible": true,
+      "certificate": "PG-13",
+      "createdAt": "2024-09-23T10:00:00.000Z",
+      "updatedAt": "2024-09-23T10:00:00.000Z"
+    }
+  ]
+  
