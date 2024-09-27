@@ -14,51 +14,20 @@ export const Navbar = () => {
   const session = useUser()
   const router = useRouter()
 
-  const hrNavigation = [
+  const navigation = [
     {
-      name: 'Dashboard',
+      name: 'Movies',
       href: '/dashboard/hr'
-    },
-    {
-      name: 'Timesheets',
-      href: '/dashboard/hr/timesheets'
-    },
-    {
-      name: 'Payroll',
-      href: '/dashboard/hr/payroll'
-    },
-    {
-      name: 'Employee',
-      href: '/dashboard/hr/employee'
-    },
-    {
-      name: 'Departments',
-      href: '/dashboard/hr/departments'
     }
   ]
 
-  const employeeNavigation = [
-    {
-      name: 'Dashboard',
-      href: '/dashboard/employee'
-    },
-    {
-      name: 'Payroll',
-      href: '/dashboard/employee/payroll'
-    },
-    {
-      name: 'Timesheets',
-      href: '/dashboard/employee/timesheets'
-    }
-  ]
+  // const [navigation, setNavigation] = useState([])
 
-  const [navigation, setNavigation] = useState([])
-
-  useEffect(() => {
-    if (!session) setNavigation([])
-    else if (session?.category === 'hr') setNavigation(hrNavigation)
-    else if (session?.category === 'employee') setNavigation(employeeNavigation)
-  }, [session])
+  // useEffect(() => {
+  //   if (!session) setNavigation([])
+  //   else if (session?.category === 'hr') setNavigation(hrNavigation)
+  //   else if (session?.category === 'employee') setNavigation(employeeNavigation)
+  // }, [session])
 
   if (router.pathname.split('/').indexOf('auth') !== -1) return <></>
 

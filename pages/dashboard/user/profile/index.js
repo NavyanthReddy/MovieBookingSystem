@@ -1,9 +1,7 @@
 import React from 'react'
-import { getLoginSession } from '../../../src/lib/auth'
-import { findUser } from '../../../src/lib/user'
 
-const HRDepartments = () => {
-  return <div>HRDepartments</div>
+const UserProfile = () => {
+  return <div>UserProfile</div>
 }
 
 export const getServerSideProps = async ({ req, res, query }) => {
@@ -18,7 +16,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
     }
   }
 
-  if (user.category !== 'hr') {
+  if (user.category !== 'user') {
     return {
       redirect: {
         destination: `/dashboard/${user.category}`,
@@ -26,10 +24,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
       }
     }
   }
-
-  return {
-    props: {}
-  }
 }
 
-export default HRDepartments
+export default UserProfile

@@ -27,12 +27,12 @@ const Home = () => {
     )
   }, [nowPlayingMovies, movieSearch])
 
-  if (isLoading) return <div className='mt-[10vh]'>Loading...</div>
+  if (isLoading) return <div className=''>Loading...</div>
 
   const isSearching = movieSearch !== ''
 
   return (
-    <main className='mt-[10vh]'>
+    <main>
       {isSearching ? (
         searchedMovies.length > 0 ? (
           <MovieList title='Search Results' movielist={searchedMovies} />
