@@ -21,7 +21,11 @@ const Signup = () => {
 
     const body = {
       username: e.currentTarget.username.value,
-      password: e.currentTarget.password.value
+      password: e.currentTarget.password.value,
+      firstName: e.currentTarget.firstName.value,
+      lastName: e.currentTarget.lastName.value,
+      phone: e.currentTarget.phone.value,
+      promotions: e.currentTarget.promotions.value == 'on' ? true : false
     }
 
     if (body.password !== e.currentTarget.rpassword.value) {
@@ -45,7 +49,7 @@ const Signup = () => {
         if (res.status === 200) {
           await mutate('/api/user')
           setLoading(false)
-          Router.push('/dashboard/user/profile')
+          Router.push('/dashboard/profile')
         } else {
           setLoading(false)
           throw new Error(await res.text())

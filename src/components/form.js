@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => (
@@ -17,12 +16,51 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
     <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
       <div className='bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12'>
         <form className='space-y-6' onSubmit={onSubmit}>
+          {!isLogin && (
+            <div className='mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'>
+              <div className='sm:col-span-3'>
+                <label
+                  htmlFor='firstName'
+                  className='block text-sm font-medium leading-6 text-gray-900'
+                >
+                  First name <span className='text-red-400'>*</span>
+                </label>
+                <div className='mt-2'>
+                  <input
+                    id='firstName'
+                    name='firstName'
+                    type='text'
+                    autoComplete='given-name'
+                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+
+              <div className='sm:col-span-3'>
+                <label
+                  htmlFor='lastName'
+                  className='block text-sm font-medium leading-6 text-gray-900'
+                >
+                  Last name <span className='text-red-400'>*</span>
+                </label>
+                <div className='mt-2'>
+                  <input
+                    id='lastName'
+                    name='lastName'
+                    type='text'
+                    autoComplete='family-name'
+                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+            </div>
+          )}
           <div>
             <label
               htmlFor='username'
               className='block text-sm font-medium leading-6 text-gray-900'
             >
-              Email address
+              Email address <span className='text-red-400'>*</span>
             </label>
             <div className='mt-2'>
               <input
@@ -41,7 +79,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
               htmlFor='password'
               className='block text-sm font-medium leading-6 text-gray-900'
             >
-              Password
+              Password <span className='text-red-400'>*</span>
             </label>
             <div className='mt-2'>
               <input
@@ -56,32 +94,52 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
           </div>
 
           {!isLogin && (
-            <div>
-              <label
-                htmlFor='confirm-password'
-                className='block text-sm font-medium leading-6 text-gray-900'
-              >
-                Confirm Password
-              </label>
-              <div className='mt-1'>
-                <input
-                  id='confirm-password'
-                  name='rpassword'
-                  type='password'
-                  autoComplete='current-password'
-                  required
-                  className='block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                />
+            <>
+              <div>
+                <label
+                  htmlFor='confirm-password'
+                  className='block text-sm font-medium leading-6 text-gray-900'
+                >
+                  Confirm Password <span className='text-red-400'>*</span>
+                </label>
+                <div className='mt-1'>
+                  <input
+                    id='confirm-password'
+                    name='rpassword'
+                    type='password'
+                    autoComplete='current-password'
+                    required
+                    className='block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
               </div>
-            </div>
+              <div>
+                <label
+                  htmlFor='phone'
+                  className='block text-sm font-medium leading-6 text-gray-900'
+                >
+                  Phone Number <span className='text-red-400'>*</span>
+                </label>
+                <div className='mt-2'>
+                  <input
+                    id='phone'
+                    name='phone'
+                    type='tel'
+                    autoComplete='tel'
+                    required
+                    className='block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+            </>
           )}
 
           {isLogin ? (
             <div className='flex items-center justify-between'>
               <Link href={'/auth/signup'} legacyBehavior>
-                <a className='ml-2 block text-sm text-gray-900 hover:underline'>
+                <span className='ml-2 block text-sm text-gray-900 hover:underline'>
                   Are you a new user?
-                </a>
+                </span>
               </Link>
             </div>
           ) : (
@@ -92,6 +150,31 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => (
                   Log in
                 </span>
               </Link>
+            </div>
+          )}
+
+          {!isLogin && (
+            <div className='relative flex items-start'>
+              <div className='flex h-6 items-center'>
+                <input
+                  id='promotions'
+                  name='promotions'
+                  type='checkbox'
+                  aria-describedby='promotions-description'
+                  className='h-4 w-4 rounded border-gray-300 text-indigo-600 ring-none	'
+                />
+              </div>
+              <div className='ml-3 text-sm leading-6'>
+                <label
+                  htmlFor='promotions'
+                  className='font-medium text-gray-900'
+                >
+                  Promotions
+                </label>{' '}
+                <span id='promotions-description' className='text-gray-500'>
+                  <span className='sr-only'>Promotions </span>to recieve offers.
+                </span>
+              </div>
             </div>
           )}
 

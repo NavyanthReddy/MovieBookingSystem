@@ -42,7 +42,7 @@ export const Navbar = () => {
             <div className='flex h-16 justify-between'>
               <div className='flex'>
                 <div className='-ml-2 mr-2 flex items-center md:hidden'>
-                  {/* Mobile menu button */}
+                  {/* Phone menu button */}
                   <Disclosure.Button className='relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
                     <span className='absolute -inset-0.5' />
                     <span className='sr-only'>Open main menu</span>
@@ -63,7 +63,7 @@ export const Navbar = () => {
                 <div className='hidden md:ml-6 md:flex md:space-x-8'>
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   {navigation.map((option, index) => (
-                    <a
+                    <button
                       key={index}
                       href={option.href}
                       legacyBehavior
@@ -75,7 +75,7 @@ export const Navbar = () => {
                       <Link key={option.name} href={option.href}>
                         {option.name}
                       </Link>
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>

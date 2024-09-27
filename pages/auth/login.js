@@ -30,7 +30,7 @@ const Login = () => {
       if (res.status === 200) {
         await mutate('/api/user')
         setLoading(false)
-        Router.push('/dashboard/user/profile')
+        Router.push('/dashboard/profile')
       } else {
         throw new Error(await res.text())
       }

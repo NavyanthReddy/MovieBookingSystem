@@ -7,7 +7,14 @@ import connectDB from './connectDB'
  * db here, such as MongoDB, Fauna, SQL, etc.
  */
 
-export async function createUser ({ username, password }) {
+export async function createUser ({
+  username,
+  password,
+  firstName,
+  lastName,
+  phone,
+  promotions
+}) {
   await connectDB()
   const oldEntry = await User.findOne({ email: username })
   if (oldEntry) {
@@ -21,7 +28,11 @@ export async function createUser ({ username, password }) {
     email: username,
     hash,
     salt,
-    category: 'user'
+    category: 'user',
+    promotions,
+    firstName,
+    lastName,
+    phone
   })
   await user.save()
   return { username, createdAt: Date.now() }
