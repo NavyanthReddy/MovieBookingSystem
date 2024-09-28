@@ -83,9 +83,23 @@ const movieSchema = new mongoose.Schema(
       type: String,
       enum: ['G', 'PG', 'PG-13', 'R', 'NC-17', 'NR'],
       default: 'NR'
-    }
+    },
+    movieTimings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'movietimings'
+      }
+    ],
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId, // Reference to reviews
+        ref: 'reviews'
+      }
+    ]
   },
   { timestamps: true }
 )
 
-export default mongoose.models.movies || mongoose.model('movies', movieSchema)
+const Movie = mongoose.models.movies || mongoose.model('movies', movieSchema)
+
+export default Movie

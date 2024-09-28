@@ -20,7 +20,7 @@ const MovieOverviewSlug = ({ movieId }) => {
   if (loading) return <div>Loading...</div>
 
   return (
-    <div className='mt-[12vh]'>
+    <div className='my-[12vh]'>
       <div className='border max-w-7xl mx-auto rounded-md bg-gray-50 shadow-md px-20 py-10'>
         <div className='flex justify-between items-center'>
           <div>

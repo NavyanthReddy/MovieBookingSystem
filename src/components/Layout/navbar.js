@@ -17,7 +17,7 @@ export const Navbar = () => {
   const navigation = [
     {
       name: 'Movies',
-      href: '/dashboard/hr'
+      href: '/'
     }
   ]
 
