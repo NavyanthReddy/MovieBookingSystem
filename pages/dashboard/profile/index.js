@@ -144,6 +144,30 @@ const UserProfile = () => {
                     {userDetails?.phone}
                   </dd>
                 </div>
+                <div className='sm:col-span-1'>
+                  <dt className='text-md font-medium text-gray-500'>
+                    Promotions
+                  </dt>
+                  <dd className=' font-semibold text-md text-gray-900'>
+                    {userDetails?.enabledPromotions ? 'Enabled' : 'Disabled'}
+                  </dd>
+                </div>
+                <div className='sm:col-span-1'>
+                  <dt className='text-md font-medium text-gray-500'>
+                    Account Verified
+                  </dt>
+                  <dd className=' font-semibold text-md text-gray-900'>
+                    {userDetails?.isVerified ? 'Verified' : 'Not verified'}
+                  </dd>
+                </div>
+                <div className='sm:col-span-1'>
+                  <dt className='text-md font-medium text-gray-500'>
+                    Account Status
+                  </dt>
+                  <dd className=' font-semibold text-md text-gray-900'>
+                    {userDetails?.status ? 'Active' : 'In-Active'}
+                  </dd>
+                </div>
               </dl>
               {/* <div className='my-10 flex flex-start flex-wrap'>
                 <OptionCard

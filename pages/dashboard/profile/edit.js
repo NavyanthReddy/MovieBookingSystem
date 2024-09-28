@@ -9,15 +9,37 @@ import { findUser } from '../../../src/lib/user'
 import { useUser } from '../../../src/lib/hooks'
 import Loader from '../../../src/components/Reusables/Loader'
 import { Header } from '../../../src/components/Reusables/Header'
+import { ToggleButton } from '../../../src/components/Reusables/Forms/ToggleButton'
+import { mutate } from 'swr'
+
+function classNames (...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 const ProfileEdit = () => {
   const user = useUser()
   const router = useRouter()
-  const [firstName, setFirstName] = useState(user?.firstName)
-  const [lastName, setLastName] = useState(user?.lastName)
-  const [image, setImage] = useState(user?.image)
-  const [phone, setPhone] = useState(user?.phone)
+  const [profile, setProfile] = useState({
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    image: user?.image,
+    phone: user?.phone,
+    enabledPromotions: user?.enabledPromotions,
+    status: user?.status
+  })
+
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setProfile({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      image: user?.image,
+      phone: user?.phone,
+      enabledPromotions: user?.enabledPromotions,
+      status: user?.status
+    })
+  }, [user])
 
   const uploadFileHandler = async e => {
     const file = e.target.files[0]
@@ -42,16 +64,13 @@ const ProfileEdit = () => {
     e.preventDefault()
     const {
       data: { message }
-    } = await axios.put(`/api/users`, {
-      userId: session.userId,
-      firstName,
-      lastName,
-      phone,
-      image
+    } = await axios.put(`/api/user/userdetails?userId=${user?._id}`, {
+      profile
     })
     if (message == 'Details Updated') {
       toast.success(message, { toastId: message })
-      router.push('/customer/profile')
+      router.push('/dashboard/profile')
+      mutate('/api/user')
     } else {
       toast.error(message, { toastId: message })
     }
@@ -94,8 +113,13 @@ const ProfileEdit = () => {
                         type='text'
                         name='firstName'
                         id='firstName'
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
+                        value={profile?.firstName}
+                        onChange={e =>
+                          setProfile({
+                            ...profile,
+                            firstName: e.target.value
+                          })
+                        }
                         autoComplete='given-name'
                         className='max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'
                       />
@@ -114,29 +138,14 @@ const ProfileEdit = () => {
                         type='text'
                         name='lastName'
                         id='lastName'
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
+                        value={profile?.lastName}
+                        onChange={e =>
+                          setProfile({
+                            ...profile,
+                            lastName: e.target.value
+                          })
+                        }
                         autoComplete='family-name'
-                        className='max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'
-                      />
-                    </div>
-                  </div>
-
-                  <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-                    <label
-                      htmlFor='phone'
-                      className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
-                    >
-                      Phone Number
-                    </label>
-                    <div className='mt-1 sm:mt-0 sm:col-span-2'>
-                      <input
-                        type='text'
-                        name='phone'
-                        id='phone'
-                        value={phone}
-                        onChange={e => setPhone(e.target.value)}
-                        autoComplete='tel'
                         className='max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'
                       />
                     </div>
@@ -157,6 +166,71 @@ const ProfileEdit = () => {
                         value={user?.email || ''}
                         disabled={true}
                         className='max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 cursor-not-allowed bg-gray-200 rounded-md'
+                      />
+                    </div>
+                  </div>
+
+                  <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
+                    <label
+                      htmlFor='phone'
+                      className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
+                    >
+                      Phone Number
+                    </label>
+                    <div className='mt-1 sm:mt-0 sm:col-span-2'>
+                      <input
+                        type='text'
+                        name='phone'
+                        id='phone'
+                        value={profile?.phone}
+                        onChange={e =>
+                          setProfile({
+                            ...profile,
+                            phone: e.target.value
+                          })
+                        }
+                        autoComplete='tel'
+                        className='max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md'
+                      />
+                    </div>
+                  </div>
+
+                  <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
+                    <label
+                      htmlFor='promotions'
+                      className='block text-sm font-medium text-gray-700 sm:mt-px '
+                    >
+                      Promotions
+                    </label>
+                    <div className='sm:mt-0 sm:col-span-2'>
+                      <ToggleButton
+                        enabled={profile.enabledPromotions}
+                        setEnabled={() =>
+                          setProfile(prevProfile => ({
+                            ...prevProfile,
+                            enabledPromotions: !prevProfile.enabledPromotions
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
+                    <label
+                      htmlFor='phone'
+                      className='block text-sm font-medium text-gray-700 sm:mt-px'
+                    >
+                      Account Status
+                    </label>
+                    <div className='sm:mt-0 sm:col-span-2'>
+                      <ToggleButton
+                        enabled={profile.status}
+                        setEnabled={() =>
+                          setProfile(prevProfile => ({
+                            ...prevProfile,
+                            status: !prevProfile.status
+                          }))
+                        }
                       />
                     </div>
                   </div>
@@ -190,9 +264,11 @@ const ProfileEdit = () => {
                         ) : (
                           <input
                             type='text'
-                            value={image}
+                            value={profile?.image}
                             disabled={true}
-                            onChange={e => setImage(e.target.value)}
+                            onChange={e =>
+                              setProfile({ ...profile, image: e.target.value })
+                            }
                             className='appearance-none block w-3/4 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                           />
                         )}
