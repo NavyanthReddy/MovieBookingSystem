@@ -1,6 +1,7 @@
 import Image from 'next/image'
-import { useSingleMovieDetails } from '../../src/hooks/useSingleMovieDetails'
+import { useSingleMovieDetails } from '../../../src/hooks/useSingleMovieDetails'
 import YouTube from 'react-youtube'
+import Link from 'next/link'
 
 const onPlayerReady = event => {
   event.target.pauseVideo()
@@ -80,6 +81,27 @@ const MovieOverviewSlug = ({ movieId }) => {
               </h3>
               <p className='text-sm leading-6 text-gray-600'>{person.role}</p>
             </li>
+          ))}
+        </ul>
+      </div>
+      <div className='max-w-7xl mx-auto'>
+        <h3 className='text-lg font-bold tracking-wide my-10'>Show Timings:</h3>
+        <ul
+          role='list'
+          className='grid max-w-2xl grid-cols-2 gap-x-8 gap-y-16 text-center sm:grid-cols-3 md:grid-cols-4 lg:mx-0 lg:max-w-none lg:grid-cols-5 xl:grid-cols-6'
+        >
+          {movieDetails?.cast.map(person => (
+            <Link
+              onClick={() => {}}
+              href={`/movieoverview/${movieId}/book/seats`}
+            >
+              <li className='border rounded bg-indigo-100' key={person.name}>
+                <h3 className='text-sm font-semibold tracking-tight text-indigo-900'>
+                  Oct 1
+                </h3>
+                <p className='text-sm leading-6 text-indigo-600'>9:00 PM</p>
+              </li>
+            </Link>
           ))}
         </ul>
       </div>

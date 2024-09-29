@@ -6,7 +6,7 @@ const seatBookingSchema = new mongoose.Schema(
       required: true
     },
     seatNumber: {
-      type: String,
+      type: [String],
       required: true
     },
     customerName: {
