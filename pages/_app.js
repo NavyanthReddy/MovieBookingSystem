@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import { ModalContextProvider } from '../src/context/ModalContext'
 import { Layout } from '../src/components/Layout/layout'
 import { MovieBookingContextProvider } from '../src/context/MovieBookingContext'
+import { Modal } from '../src/components/Reusables/Modal'
 
 export default function App ({ Component, pageProps }) {
   const user = useUser()
@@ -14,6 +15,7 @@ export default function App ({ Component, pageProps }) {
         <Layout>
           <Component {...pageProps} user={user} />
           <ToastContainer />
+          <Modal />
         </Layout>
       </ModalContextProvider>
     </MovieBookingContextProvider>

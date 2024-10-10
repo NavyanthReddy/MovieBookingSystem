@@ -203,15 +203,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
     }
   }
 
-  if (user.category !== 'user') {
-    return {
-      redirect: {
-        destination: `/dashboard/${user.category}`,
-        permanent: false
-      }
-    }
-  }
-
   return {
     props: {}
   }

@@ -6,6 +6,8 @@ export default async function handler (req, res) {
     case 'GET':
       await searchMovie(req, res)
       break
+    case 'DELETE':
+      await deleteMovie(req, res)
   }
 }
 
@@ -14,8 +16,6 @@ const searchMovie = async (req, res) => {
     await connectDB()
 
     const { movieId } = req.query
-
-    console.log(123, movieId)
 
     const movieDetails = await Movie.findById(movieId)
 
@@ -27,6 +27,24 @@ const searchMovie = async (req, res) => {
       return res
         .status(404)
         .json({ message: 'Movie not found', movieDetails: undefined })
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+const deleteMovie = async (req, res) => {
+  try {
+    await connectDB()
+
+    const { movieId } = req.query
+
+    const movieDetails = await Movie.findOneAndDelete({ _id: movieId })
+
+    if (movieDetails) {
+      return res.status(200).json({ message: 'Movie Deleted' })
+    } else {
+      return res.status(200).json({ message: 'Movie not available' })
     }
   } catch (error) {
     return res.status(500).json({ message: error.message })
