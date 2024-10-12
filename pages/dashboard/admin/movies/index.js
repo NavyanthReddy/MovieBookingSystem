@@ -11,7 +11,11 @@ const AdminMovies = () => {
   const { setForm, setDeleteId, setIsOpen } = useModalContext()
   return (
     <div className='mt-[10vh]'>
-      <Heading title={'Movies'} button={'Add Movies'} href={'/'} />
+      <Heading
+        title={'Movies'}
+        button={'Add Movies'}
+        href={'/dashboard/admin/movies/add'}
+      />
 
       <div className='mt-8 flow-root max-w-6xl mx-auto'>
         <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
@@ -105,7 +109,7 @@ const AdminMovies = () => {
                       </td>
                       <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                         <Link
-                          href={`/dashboard/movies/${movie?._id}/edit`}
+                          href={`/dashboard/admin/movies/${movie?._id}/edit`}
                           className='text-indigo-600 hover:text-indigo-900'
                         >
                           Edit<span className='sr-only'>, {movie?.name}</span>

@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^43.2.0",
+    "@ckeditor/ckeditor5-react": "^9.3.0",
     "@hapi/iron": "6.0.0",
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.1.3",

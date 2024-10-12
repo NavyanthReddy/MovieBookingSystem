@@ -10,9 +10,8 @@ const movieTimingSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    availableSeats: {
-      type: Number,
-      required: true
+    seatsBooked: {
+      type: String
     },
     movie: {
       type: mongoose.Schema.Types.ObjectId,
