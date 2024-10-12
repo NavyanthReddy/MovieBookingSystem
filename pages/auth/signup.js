@@ -49,7 +49,7 @@ const Signup = () => {
         if (res.status === 200) {
           await mutate('/api/user')
           setLoading(false)
-          Router.push('/dashboard/profile')
+          Router.push('/')
         } else {
           setLoading(false)
           throw new Error(await res.text())
