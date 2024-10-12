@@ -312,29 +312,7 @@ const MovieAdd = () => {
                   />
                 </div> */}
 
-                <div className='sm:col-span-2 -mt-2'>
-                  <Variations
-                    title='Cast'
-                    handleExtraOptions={extra =>
-                      setVariations({
-                        ...variations,
-                        cast: [...variations.cast, extra]
-                      })
-                    }
-                    deleteOption={option =>
-                      setVariations({
-                        ...variations,
-                        cast: variations.cast.filter(
-                          x =>
-                            x.name !== option.name || x.value !== option.value
-                        )
-                      })
-                    }
-                    extraOptions={variations.cast}
-                  />
-                </div>
-
-                <div className='sm:col-span-2'>
+                <div className='sm:col-span-3'>
                   <label
                     htmlFor='trailer'
                     className='block text-sm font-medium text-gray-700'
@@ -358,6 +336,28 @@ const MovieAdd = () => {
                     options={statusOptions}
                     selectedOption={status}
                     setSelectedOption={setStatus}
+                  />
+                </div>
+
+                <div className='sm:col-span-3 -mt-2'>
+                  <Variations
+                    title='Cast'
+                    handleExtraOptions={extra =>
+                      setVariations({
+                        ...variations,
+                        cast: [...variations.cast, extra]
+                      })
+                    }
+                    deleteOption={option =>
+                      setVariations({
+                        ...variations,
+                        cast: variations.cast.filter(
+                          x =>
+                            x.name !== option.name || x.value !== option.value
+                        )
+                      })
+                    }
+                    extraOptions={variations.cast}
                   />
                 </div>
 

@@ -8,6 +8,8 @@ export default async function handler (req, res) {
       break
     case 'POST':
       await createMovie(req, res)
+    case 'PUT':
+      await updateMovie(req, res)
     case 'DELETE':
       await deleteMovie(req, res)
   }
@@ -45,6 +47,23 @@ const createMovie = async (req, res) => {
       message: 'Success! Movie Created',
       movie: createMovie
     })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+const updateMovie = async (req, res) => {
+  try {
+    await connectDB()
+
+    const movie = await Movie.findByIdAndUpdate(req.body._id, req.body, {
+      new: true
+    })
+    if (movie) {
+      return res.status(200).json({ message: 'Movie Updated', movie })
+    } else {
+      return res.status(200).json({ message: 'Please try again!' })
+    }
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }

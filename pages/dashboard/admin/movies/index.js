@@ -90,7 +90,7 @@ const AdminMovies = () => {
                         {movie?.title}
                       </td>
                       <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {new Date(movie?.releaseDate).toLocaleDateString(
+                        {new Date(movie?.movieStartDate).toLocaleDateString(
                           'en-US'
                         )}
                       </td>
@@ -101,11 +101,13 @@ const AdminMovies = () => {
                         {movie?.certificate}
                       </td>
                       <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {movie?.isPlaying ? 'True' : 'False'}
+                        {new Date(movie?.movieEndDate) < new Date()
+                          ? 'False'
+                          : 'True'}
                       </td>
 
                       <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {movie?.isVisible ? 'True' : 'False'}
+                        {movie?.status == 'Draft' ? 'True' : 'False'}
                       </td>
                       <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                         <Link
