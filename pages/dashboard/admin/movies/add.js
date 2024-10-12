@@ -14,6 +14,8 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { getLoginSession } from '../../../../src/lib/auth'
+import { findUser } from '../../../../src/lib/user'
 
 const MovieAdd = () => {
   const router = useRouter()
@@ -22,7 +24,7 @@ const MovieAdd = () => {
   )
   const [status, setStatus] = useState(statusOptions[0])
   const [description, setDescription] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState({ type: '', status: false })
   const [logo, setLogo] = useState('')
   const [from, setFrom] = useState(new Date().toISOString())
   const [genre, setGenre] = useState([])
@@ -47,14 +49,13 @@ const MovieAdd = () => {
     formData.append('file', file)
     formData.append('upload_preset', 'gj3cvwjo')
     try {
-      setLoading(true)
+      setLoading({ type: 'logo', status: true })
       const uploadRes = await axios.post(
         'https://api.cloudinary.com/v1_1/dg2mbrlin/image/upload',
         formData
       )
-      setLoading(false)
+      setLoading({ type: 'logo', status: false })
       const { url } = uploadRes.data
-      console.log(url)
       setLogo(url)
     } catch (error) {
       toast.error(error, { toastId: error })
@@ -79,6 +80,8 @@ const MovieAdd = () => {
   const onSubmitHandler = async e => {
     e.preventDefault()
 
+    setLoading({ type: 'add', status: true })
+
     const movieDetails = {
       title,
       cast: variations.cast,
@@ -99,6 +102,8 @@ const MovieAdd = () => {
       data: { message }
     } = await axios.post(`/api/movies/moviedetails`, movieDetails)
 
+    setLoading({ type: 'add', status: false })
+
     if (message == 'Success! Movie Created') {
       toast.success(message, { toastId: message })
       router.push('/dashboard/admin/movies')
@@ -111,7 +116,6 @@ const MovieAdd = () => {
     <div>
       <Header heading={'Add Movie'} />
       <main className='relative -mt-40'>
-        <button onClick={() => setLoading(false)}>Click</button>
         <div className='space-y-6 max-w-7xl mx-auto py-8'>
           <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
             <div className='mb-5 md:col-span-1'>
@@ -195,7 +199,7 @@ const MovieAdd = () => {
                   </label>
                   <div className='mt-1'>
                     <div className='sm:mt-0 sm:col-span-2'>
-                      {loading ? (
+                      {loading?.type == 'logo' && loading?.status ? (
                         <div className='animate-pulse'>
                           <input className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none bg-gray-200 sm:text-sm h-10'></input>
                         </div>
@@ -208,7 +212,7 @@ const MovieAdd = () => {
                           className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                         />
                       )}
-                      {loading ? (
+                      {loading?.type == 'logo' && loading?.status ? (
                         <div className='inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm text-gray-500 cursor-not-allowed'>
                           <Loader height={6} width={6} color='gray' />
                           Please Wait...
@@ -414,10 +418,12 @@ const MovieAdd = () => {
                   </button>
                 </Link>
                 <button
-                  disabled={loading}
+                  disabled={loading?.status}
                   onClick={onSubmitHandler}
                   className={`${
-                    loading ? 'cursor-not-allowed' : 'hover:bg-indigo-700 '
+                    loading?.status
+                      ? 'cursor-not-allowed'
+                      : 'hover:bg-indigo-700 '
                   } ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600`}
                 >
                   Save
@@ -429,6 +435,33 @@ const MovieAdd = () => {
       </main>
     </div>
   )
+}
+
+export const getServerSideProps = async ({ req, res, query }) => {
+  const session = await getLoginSession(req)
+  const user = (session?._doc && (await findUser(session._doc))) ?? null
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false
+      }
+    }
+  }
+
+  if (user.category !== 'admin') {
+    return {
+      redirect: {
+        destination: `/dashboard/${user.category}`,
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }
 
 export default MovieAdd

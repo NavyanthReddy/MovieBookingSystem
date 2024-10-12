@@ -13,7 +13,7 @@ const AdminMovies = () => {
     <div className='mt-[10vh]'>
       <Heading
         title={'Movies'}
-        button={'Add Movies'}
+        button={'Add Movie'}
         href={'/dashboard/admin/movies/add'}
       />
 

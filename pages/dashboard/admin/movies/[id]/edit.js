@@ -4,6 +4,7 @@ import { DropDown } from '../../../../../src/components/Reusables/Forms/Dropdown
 import {
   certificateOptions,
   genreOptions,
+  getSelected,
   statusOptions
 } from '../../../../../src/lib/helper'
 import Editor from '../../../../../src/components/Reusables/Forms/Editor'
@@ -18,14 +19,7 @@ import { getLoginSession } from '../../../../../src/lib/auth'
 import { findUser } from '../../../../../src/lib/user'
 import { mutate } from 'swr'
 
-const getSelected = (options, value) => {
-  if (!value) return options[0]
-  return options.filter(x => x.name === value).length > 0
-    ? options.filter(x => x.name === value)[0]
-    : options[0]
-}
-
-const MovieAdd = ({ movieDetails }) => {
+const MovieEdit = ({ movieDetails }) => {
   console.log(movieDetails)
   const router = useRouter()
   const [selectedCertificate, setSelectedCertificate] = useState(
@@ -35,7 +29,7 @@ const MovieAdd = ({ movieDetails }) => {
     getSelected(statusOptions, movieDetails?.status)
   )
   const [description, setDescription] = useState(movieDetails?.description)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState({ type: '', status: false })
   const [logo, setLogo] = useState(movieDetails?.image)
   const [from, setFrom] = useState(
     movieDetails?.movieStartDate || new Date().toISOString()
@@ -59,12 +53,12 @@ const MovieAdd = ({ movieDetails }) => {
     formData.append('file', file)
     formData.append('upload_preset', 'gj3cvwjo')
     try {
-      setLoading(true)
+      setLoading({ type: 'logo', status: true })
       const uploadRes = await axios.post(
         'https://api.cloudinary.com/v1_1/dg2mbrlin/image/upload',
         formData
       )
-      setLoading(false)
+      setLoading({ type: 'logo', status: false })
       const { url } = uploadRes.data
       setLogo(url)
     } catch (error) {
@@ -89,7 +83,7 @@ const MovieAdd = ({ movieDetails }) => {
 
   const onSubmitHandler = async e => {
     e.preventDefault()
-
+    setLoading({ type: 'edit', status: true })
     // const movieDetails = {
     //   title,
     //   cast: variations.cast,
@@ -124,6 +118,8 @@ const MovieAdd = ({ movieDetails }) => {
       movieTimings
     })
 
+    setLoading({ type: 'edit', status: false })
+
     if (message == 'Movie Updated') {
       toast.success(message, { toastId: message })
       mutate('/api/movies/')
@@ -137,7 +133,6 @@ const MovieAdd = ({ movieDetails }) => {
     <div>
       <Header heading={'Edit Movie'} />
       <main className='relative -mt-40'>
-        <button onClick={() => setLoading(false)}>Click</button>
         <div className='space-y-6 max-w-7xl mx-auto py-8'>
           <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
             <div className='mb-5 md:col-span-1'>
@@ -221,7 +216,7 @@ const MovieAdd = ({ movieDetails }) => {
                   </label>
                   <div className='mt-1'>
                     <div className='sm:mt-0 sm:col-span-2'>
-                      {loading ? (
+                      {loading?.type == 'logo' && loading?.status ? (
                         <div className='animate-pulse'>
                           <input className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none bg-gray-200 sm:text-sm h-10'></input>
                         </div>
@@ -234,7 +229,7 @@ const MovieAdd = ({ movieDetails }) => {
                           className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                         />
                       )}
-                      {loading ? (
+                      {loading?.type == 'logo' && loading?.status ? (
                         <div className='inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm text-gray-500 cursor-not-allowed'>
                           <Loader height={6} width={6} color='gray' />
                           Please Wait...
@@ -440,10 +435,12 @@ const MovieAdd = ({ movieDetails }) => {
                   </button>
                 </Link>
                 <button
-                  disabled={loading}
+                  disabled={loading?.status}
                   onClick={onSubmitHandler}
                   className={`${
-                    loading ? 'cursor-not-allowed' : 'hover:bg-indigo-700 '
+                    loading?.status
+                      ? 'cursor-not-allowed'
+                      : 'hover:bg-indigo-700 '
                   } ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600`}
                 >
                   Save
@@ -480,7 +477,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
   }
 
   const { data } = await axios.get(
-    `http://localhost:3003/api/movies/moviedetails?movieId=${query.id}`
+    `${process.env.NEXT_PUBLIC_HOST_URL}/movies/moviedetails?movieId=${query.id}`
   )
 
   return {
@@ -490,4 +487,4 @@ export const getServerSideProps = async ({ req, res, query }) => {
   }
 }
 
-export default MovieAdd
+export default MovieEdit

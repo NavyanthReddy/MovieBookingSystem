@@ -4,16 +4,18 @@ import { toast } from 'react-toastify'
 import { useModalContext } from '../../context/ModalContext'
 import { mutate } from 'swr'
 
-export const DeleteForm = () => {
+export const DeletePromotionForm = () => {
   const { setIsOpen, setForm, deleteId } = useModalContext()
-  const [movieName, setMovieName] = useState('')
+  const [promotionName, setPromotionName] = useState('')
 
   const handleDelete = async e => {
     const {
       data: { message }
-    } = await axios.delete(`/api/movies/moviedetails?movieId=${deleteId?._id}`)
-    if (message == 'Movie Deleted') {
-      await mutate('/api/movies/')
+    } = await axios.delete(
+      `/api/promotions/promotiondetails?promotionId=${deleteId?._id}`
+    )
+    if (message == 'Promotion Deleted') {
+      await mutate('/api/promotions/')
       setIsOpen(false)
       setForm('')
       toast.success(message, { toastId: message })
@@ -35,33 +37,33 @@ export const DeleteForm = () => {
             className='absolute -top-2 left-2 -mt-px inline-block px-1 text-xs bg-gray-800 font-medium text-white'
           >
             Please type{' '}
-            <span className='text-red-500 select-none'>{deleteId?.title}</span>{' '}
+            <span className='text-red-500 select-none'>{deleteId?.name}</span>{' '}
             to confirm
           </label>
           <input
             type='text'
             name='delete'
-            value={movieName}
-            onChange={e => setMovieName(e.target.value)}
+            value={promotionName}
+            onChange={e => setPromotionName(e.target.value)}
             id='delete'
             className='block w-full border-0 p-0 text-gray-100 bg-gray-800 focus:ring-0 sm:text-sm'
           />
         </div>
         <button
           type='button'
-          disabled={movieName !== deleteId?.title}
+          disabled={promotionName !== deleteId?.name}
           onClick={() => {
-            if (movieName === deleteId?.title) {
+            if (promotionName === deleteId?.name) {
               handleDelete()
             }
           }}
           className={`w-full my-2 block items-center px-4 py-1 border border-transparent text-md font-semibold rounded-md ${
-            movieName === deleteId?.title
+            promotionName === deleteId?.name
               ? 'bg-red-600 text-white'
               : 'bg-gray-700 text-red-700 cursor-not-allowed'
           }`}
         >
-          I understand the consequences, delete this movie
+          I understand the consequences, delete this promotion
         </button>
       </div>
     </form>

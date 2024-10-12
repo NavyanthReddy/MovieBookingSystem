@@ -14,20 +14,35 @@ export const Navbar = () => {
   const session = useUser()
   const router = useRouter()
 
-  const navigation = [
+  const adminNavigation = [
+    {
+      name: 'Movies',
+      href: '/dashboard/admin/movies'
+    },
+    {
+      name: 'Promotions',
+      href: '/dashboard/admin/promotions'
+    },
+    {
+      name: 'Users',
+      href: '/dashboard/admin/users'
+    }
+  ]
+
+  const userNavigation = [
     {
       name: 'Movies',
       href: '/'
     }
   ]
 
-  // const [navigation, setNavigation] = useState([])
+  const [navigation, setNavigation] = useState([])
 
-  // useEffect(() => {
-  //   if (!session) setNavigation([])
-  //   else if (session?.category === 'hr') setNavigation(hrNavigation)
-  //   else if (session?.category === 'employee') setNavigation(employeeNavigation)
-  // }, [session])
+  useEffect(() => {
+    if (!session) setNavigation([])
+    else if (session?.category === 'admin') setNavigation(adminNavigation)
+    else if (session?.category === 'user') setNavigation(userNavigation)
+  }, [session])
 
   if (router.pathname.split('/').indexOf('auth') !== -1) return <></>
 

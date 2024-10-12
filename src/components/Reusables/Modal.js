@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useModalContext } from '../../context/ModalContext'
 import { DeleteForm } from '../ModalForms/DeleteForm'
+import { DeletePromotionForm } from '../ModalForms/DeletePromotionForm'
 
 export const Modal = () => {
   const { isOpen, closeModal, form, setLoading } = useModalContext()
@@ -67,6 +68,7 @@ export const Modal = () => {
                   <XMarkIcon className='block h-4 w-4' aria-hidden='true' />
                 </button>
                 {form === 'DeleteFormModal' && <DeleteForm />}
+                {form === 'DeletePromotionFormModal' && <DeletePromotionForm />}
               </div>
             </Transition.Child>
           </div>
