@@ -1,10 +1,11 @@
 import React from 'react'
-import { getLoginSession } from '../../../src/lib/auth'
-import { findUser } from '../../../src/lib/user'
+import { getLoginSession } from '../../../../src/lib/auth'
+import { findUser } from '../../../../src/lib/user'
 import Link from 'next/link'
 import Head from 'next/head'
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { useUser } from '../../../src/lib/hooks'
+import { useUser } from '../../../../src/lib/hooks'
+import axios from 'axios'
 // import { Modal } from '../../../src/components/Layouts/Modal'
 
 const tabs = [{ name: 'Profile', href: '#', current: true }]
@@ -13,8 +14,7 @@ function classNames (...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const UserProfile = () => {
-  const userDetails = useUser()
+const UserProfile = ({ userDetails }) => {
   //     const {isOpen, }
   //   let [isOpen, setIsOpen] = useState(false);
   //   function closeModal() {
@@ -65,7 +65,9 @@ const UserProfile = () => {
                       </h1>
                     </div>
                     <div className='mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                      <Link href='/dashboard/profile/edit'>
+                      <Link
+                        href={`/dashboard/profile/${userDetails?._id}/edit`}
+                      >
                         <button
                           type='button'
                           className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
@@ -202,9 +204,14 @@ export const getServerSideProps = async ({ req, res, query }) => {
       }
     }
   }
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_HOST_URL}/api/user/singleUserdetails?userId=${query.id}`
+  )
 
   return {
-    props: {}
+    props: {
+      userDetails: data?.userdetails ?? null
+    }
   }
 }
 

@@ -4,42 +4,42 @@ import Head from 'next/head'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import { getLoginSession } from '../../../src/lib/auth'
-import { findUser } from '../../../src/lib/user'
-import { useUser } from '../../../src/lib/hooks'
-import Loader from '../../../src/components/Reusables/Loader'
-import { Header } from '../../../src/components/Reusables/Header'
-import { ToggleButton } from '../../../src/components/Reusables/Forms/ToggleButton'
+import { getLoginSession } from '../../../../src/lib/auth'
+import { findUser } from '../../../../src/lib/user'
+import Loader from '../../../../src/components/Reusables/Loader'
+import { Header } from '../../../../src/components/Reusables/Header'
+import { ToggleButton } from '../../../../src/components/Reusables/Forms/ToggleButton'
 import { mutate } from 'swr'
+import { useUser } from '../../../../src/lib/hooks'
 
 function classNames (...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const ProfileEdit = () => {
+const ProfileEdit = ({ userDetails }) => {
   const user = useUser()
   const router = useRouter()
   const [profile, setProfile] = useState({
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-    image: user?.image,
-    phone: user?.phone,
-    enabledPromotions: user?.enabledPromotions,
-    status: user?.status
+    firstName: userDetails?.firstName,
+    lastName: userDetails?.lastName,
+    image: userDetails?.image,
+    phone: userDetails?.phone,
+    enabledPromotions: userDetails?.enabledPromotions,
+    status: userDetails?.status
   })
 
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setProfile({
-      firstName: user?.firstName,
-      lastName: user?.lastName,
-      image: user?.image,
-      phone: user?.phone,
-      enabledPromotions: user?.enabledPromotions,
-      status: user?.status
+      firstName: userDetails?.firstName,
+      lastName: userDetails?.lastName,
+      image: userDetails?.image,
+      phone: userDetails?.phone,
+      enabledPromotions: userDetails?.enabledPromotions,
+      status: userDetails?.status
     })
-  }, [user])
+  }, [userDetails])
 
   const uploadFileHandler = async e => {
     const file = e.target.files[0]
@@ -64,12 +64,12 @@ const ProfileEdit = () => {
     e.preventDefault()
     const {
       data: { message }
-    } = await axios.put(`/api/user/userdetails?userId=${user?._id}`, {
+    } = await axios.put(`/api/user/userdetails?userId=${userDetails?._id}`, {
       profile
     })
     if (message == 'Details Updated') {
       toast.success(message, { toastId: message })
-      router.push('/dashboard/profile')
+      router.push(`/dashboard/profile/${userDetails?._id}`)
       mutate('/api/user')
     } else {
       toast.error(message, { toastId: message })
@@ -163,9 +163,12 @@ const ProfileEdit = () => {
                         id='registered-email'
                         name='registered-email'
                         type='email'
-                        value={user?.email || ''}
-                        disabled={true}
-                        className='max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 cursor-not-allowed bg-gray-200 rounded-md'
+                        value={userDetails?.email || ''}
+                        disabled={user?.category != 'admin'}
+                        className={`${
+                          user?.category != 'admin' &&
+                          'bg-gray-200 cursor-not-allowed'
+                        } max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300  rounded-md`}
                       />
                     </div>
                   </div>
@@ -295,7 +298,7 @@ const ProfileEdit = () => {
 
               <div className='pt-5'>
                 <div className='flex justify-end'>
-                  <Link href='/dashboard/profile'>
+                  <Link href={`/dashboard/profile/${userDetails?._id}`}>
                     <button
                       type='button'
                       className='bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 '
@@ -323,9 +326,10 @@ const ProfileEdit = () => {
   )
 }
 
-export const getServerSideProps = async ({ req, res }) => {
+export const getServerSideProps = async ({ req, res, query }) => {
   const session = await getLoginSession(req)
   const user = (session?._doc && (await findUser(session._doc))) ?? null
+
   if (!user) {
     return {
       redirect: {
@@ -335,8 +339,14 @@ export const getServerSideProps = async ({ req, res }) => {
     }
   }
 
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_HOST_URL}/api/user/singleUserdetails?userId=${query.id}`
+  )
+
   return {
-    props: {}
+    props: {
+      userDetails: data?.userdetails ?? null
+    }
   }
 }
 

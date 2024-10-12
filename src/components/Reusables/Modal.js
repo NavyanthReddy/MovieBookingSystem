@@ -4,6 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useModalContext } from '../../context/ModalContext'
 import { DeleteForm } from '../ModalForms/DeleteForm'
 import { DeletePromotionForm } from '../ModalForms/DeletePromotionForm'
+import { DeleteUserForm } from '../ModalForms/DeleteUserForm'
 
 export const Modal = () => {
   const { isOpen, closeModal, form, setLoading } = useModalContext()
@@ -69,6 +70,7 @@ export const Modal = () => {
                 </button>
                 {form === 'DeleteFormModal' && <DeleteForm />}
                 {form === 'DeletePromotionFormModal' && <DeletePromotionForm />}
+                {form === 'DeleteUserFormModal' && <DeleteUserForm />}
               </div>
             </Transition.Child>
           </div>
