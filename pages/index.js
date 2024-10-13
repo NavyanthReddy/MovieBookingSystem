@@ -8,24 +8,24 @@ const Home = () => {
   const { movieSearch } = useModalContext()
   const currentDate = new Date()
 
-  const nowPlayingMovies = useMemo(() => {
-    return movies?.filter(
-      movie => movie.isVisible && new Date(movie.releaseDate) <= currentDate
-    )
-  }, [movies, currentDate])
+  // const nowPlayingMovies = useMemo(() => {
+  //   return movies?.filter(
+  //     movie => movie.isVisible && new Date(movie.releaseDate) <= currentDate
+  //   )
+  // }, [movies, currentDate])
 
-  const comingSoonMovies = useMemo(() => {
-    return movies?.filter(
-      movie => movie.isVisible && new Date(movie.releaseDate) > currentDate
-    )
-  }, [movies, currentDate])
+  // const comingSoonMovies = useMemo(() => {
+  //   return movies?.filter(
+  //     movie => movie.isVisible && new Date(movie.releaseDate) > currentDate
+  //   )
+  // }, [movies, currentDate])
 
-  const searchedMovies = useMemo(() => {
-    if (movieSearch === '') return []
-    return nowPlayingMovies?.filter(movie =>
-      movie.title.toLowerCase().includes(movieSearch.toLowerCase())
-    )
-  }, [nowPlayingMovies, movieSearch])
+  // const searchedMovies = useMemo(() => {
+  //   if (movieSearch === '') return []
+  //   return nowPlayingMovies?.filter(movie =>
+  //     movie.title.toLowerCase().includes(movieSearch.toLowerCase())
+  //   )
+  // }, [nowPlayingMovies, movieSearch])
 
   if (isLoading) return <div className=''>Loading...</div>
 
@@ -33,20 +33,7 @@ const Home = () => {
 
   return (
     <main>
-      {isSearching ? (
-        searchedMovies.length > 0 ? (
-          <MovieList title='Search Results' movielist={searchedMovies} />
-        ) : (
-          <div className='mt-4 text-gray-500'>
-            No results found for "{movieSearch}"
-          </div>
-        )
-      ) : (
-        <>
-          <MovieList title='Now Playing' movielist={nowPlayingMovies} />
-          <MovieList title='Coming Soon' movielist={comingSoonMovies} />
-        </>
-      )}
+      <MovieList title='Now Playing' movielist={movies} />
     </main>
   )
 }

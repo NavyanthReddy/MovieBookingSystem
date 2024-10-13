@@ -2,6 +2,15 @@ import Image from 'next/image'
 import { useSingleMovieDetails } from '../../../src/hooks/useSingleMovieDetails'
 import YouTube from 'react-youtube'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { ReviewForm } from '../../../src/components/Reusables/Forms/ReviewForm'
+import axios from 'axios'
+import { getLoginSession } from '../../../src/lib/auth'
+import { findUser } from '../../../src/lib/user'
+import { toast } from 'react-toastify'
+import { mutate } from 'swr'
+import { ReviewCard } from '../../../src/components/Reusables/ReviewCard'
+import { useReviewDetails } from '../../../src/hooks/useReviewDetails'
 
 const onPlayerReady = event => {
   event.target.pauseVideo()
@@ -15,10 +24,81 @@ const opts = {
   }
 }
 
-const MovieOverviewSlug = ({ movieId }) => {
+function classNames (...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
+const MovieOverviewSlug = ({ movieId, user }) => {
   const { movieDetails, loading } = useSingleMovieDetails(movieId)
+  const { reviews, isReviewLoading } = useReviewDetails(movieDetails?._id)
+  const [showTimings, setShowTimings] = useState(true)
+  const [groupedTimingsArray, setGroupedTimingsArray] = useState([])
+
+  const [rating, setRating] = useState(0)
+  const [review, setReview] = useState('')
+  const [averageRating, setAverageRating] = useState(0)
+
+  useEffect(() => {
+    if (isReviewLoading) return
+    let totalRating = 0
+    reviews.forEach(x => {
+      totalRating += parseInt(x.rating)
+    })
+    if (reviews.length !== 0) setAverageRating(totalRating / reviews.length)
+  }, [])
+
+  useEffect(() => {
+    if (movieDetails?.movieTimings) {
+      const groupByDate = movieDetails.movieTimings.reduce((acc, current) => {
+        const { date, time } = current
+
+        if (!acc[date]) {
+          acc[date] = []
+        }
+
+        acc[date].push(time)
+        return acc
+      }, {})
+
+      const formattedTimings = Object.keys(groupByDate).map(date => ({
+        date,
+        times: groupByDate[date]
+      }))
+
+      setGroupedTimingsArray(formattedTimings)
+    }
+  }, [movieDetails])
+
+  const handleReviewCreate = async () => {
+    try {
+      const { data } = await axios.post(`/api/reviews`, {
+        user: user?._id,
+        movie: movieDetails?._id,
+        rating: rating,
+        comment: review
+      })
+
+      if (data?.message == 'Success! Review Created') {
+        setRating(0)
+        setReview('')
+        toast.success(data?.message, { toastId: data?.message })
+        mutate(`/api/reviews?movieId=${movieDetails?._id}`)
+      } else {
+        toast.error(data?.message, { toastId: data?.message })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   if (loading) return <div>Loading...</div>
+
+  // Function to check if the showtime has passed
+  const isShowtimePassed = (date, time) => {
+    const showtime = new Date(`${date}T${time}:00`) // Combine date and time
+    const now = new Date()
+    return showtime < now
+  }
 
   return (
     <div className='my-[12vh]'>
@@ -28,6 +108,7 @@ const MovieOverviewSlug = ({ movieId }) => {
             <img
               src={movieDetails?.image}
               className='h-[100%] w-[38vh] rounded-md'
+              alt='Movie Poster'
             />
           </div>
           <YouTube
@@ -50,7 +131,7 @@ const MovieOverviewSlug = ({ movieId }) => {
               |
               <span className='ml-1'>
                 In Theaters{' '}
-                {new Date(movieDetails?.releaseDate).toLocaleDateString(
+                {new Date(movieDetails?.movieStartDate).toLocaleDateString(
                   'en-US',
                   { month: 'long', day: 'numeric', year: 'numeric' }
                 )}
@@ -58,9 +139,14 @@ const MovieOverviewSlug = ({ movieId }) => {
             </span>
           </div>
           <div className='flex items-center'>
-            <Image src={'/icons/popcorn.png'} height='25' width='20' />
+            <Image
+              src={'/icons/popcorn.png'}
+              height='25'
+              width='20'
+              alt='Popcorn'
+            />
             <p className='ml-1 text-md font-bold text-gray-900'>
-              {movieDetails?.ratings}/ 5.0
+              {averageRating.toFixed(1)}/ 5.0
             </p>
           </div>
         </div>
@@ -79,40 +165,114 @@ const MovieOverviewSlug = ({ movieId }) => {
               <h3 className='text-sm font-semibold tracking-tight text-gray-900'>
                 {person?.name}
               </h3>
-              <p className='text-sm leading-6 text-gray-600'>{person.role}</p>
+              <p className='text-sm leading-6 text-gray-600'>{person.value}</p>
             </li>
           ))}
         </ul>
       </div>
-      <div className='max-w-7xl mx-auto'>
-        <h3 className='text-lg font-bold tracking-wide my-10'>Show Timings:</h3>
-        <ul
-          role='list'
-          className='grid max-w-2xl grid-cols-2 gap-x-8 gap-y-16 text-center sm:grid-cols-3 md:grid-cols-4 lg:mx-0 lg:max-w-none lg:grid-cols-5 xl:grid-cols-6'
-        >
-          {movieDetails?.cast.map(person => (
-            <Link
-              onClick={() => {}}
-              href={`/movieoverview/${movieId}/book/seats`}
-            >
-              <li className='border rounded bg-indigo-100' key={person.name}>
-                <h3 className='text-sm font-semibold tracking-tight text-indigo-900'>
-                  Oct 1
-                </h3>
-                <p className='text-sm leading-6 text-indigo-600'>9:00 PM</p>
-              </li>
-            </Link>
-          ))}
-        </ul>
+
+      <div className='max-w-7xl mx-auto mt-6 sm:mt-2 2xl:mt-5'>
+        <div className='border-b border-gray-200'>
+          <div className='px-4 sm:px-6 lg:px-8'>
+            <nav className='-mb-px flex space-x-8' aria-label='Tabs'>
+              <button
+                onClick={() => setShowTimings(true)}
+                className={classNames(
+                  showTimings
+                    ? 'border-pink-500 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                  'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-md'
+                )}
+                aria-current={showTimings ? 'page' : undefined}
+              >
+                Show Timings
+              </button>
+              <button
+                onClick={() => setShowTimings(false)}
+                className={classNames(
+                  !showTimings
+                    ? 'border-pink-500 text-gray-900'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                  'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-md'
+                )}
+                aria-current={!showTimings ? 'page' : undefined}
+              >
+                Reviews
+              </button>
+            </nav>
+          </div>
+        </div>
       </div>
+
+      {/* Show Timings Section */}
+      {showTimings ? (
+        <div className='max-w-7xl mx-auto'>
+          <div className='divide-y divide-gray-200'>
+            {groupedTimingsArray.map(movie => (
+              <div key={movie.date} className='flex items-center py-4 px-6'>
+                {/* Movie Title on the Left */}
+                <div className='w-1/3 text-left'>
+                  <h3 className='font-bold text-md'>
+                    {new Date(movie?.date).toLocaleDateString('en-US', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </h3>
+                </div>
+
+                <div className='w-2/3 flex flex-wrap gap-3 justify-start'>
+                  {movie.times.map(time => {
+                    const passed = isShowtimePassed(movie.date, time)
+                    return (
+                      <button
+                        key={time}
+                        className={`px-4 py-2 border rounded ${
+                          passed
+                            ? 'border-gray-400 text-gray-400 cursor-not-allowed'
+                            : 'border-indigo-400 text-indigo-700 hover:bg-indigo-50'
+                        }`}
+                        disabled={passed}
+                      >
+                        {time}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className='max-w-7xl mx-auto'>
+          {user && (
+            <ReviewForm
+              rating={rating}
+              review={review}
+              setRating={setRating}
+              setReview={setReview}
+              handleCreate={handleReviewCreate}
+            />
+          )}
+          <div>
+            {reviews.map(review => (
+              <ReviewCard key={review?._id} review={review} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 export const getServerSideProps = async ({ req, res, query }) => {
+  const session = await getLoginSession(req)
+  const user = (session?._doc && (await findUser(session._doc))) ?? null
+
   return {
     props: {
-      movieId: query.id
+      movieId: query.id,
+      user: JSON.parse(JSON.stringify(user))
     }
   }
 }

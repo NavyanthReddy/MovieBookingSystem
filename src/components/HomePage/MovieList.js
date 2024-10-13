@@ -36,12 +36,9 @@ export const MovieList = ({ title, movielist }) => {
                     </Link>
                   </h3>
                 </div>
-                <div className='grid grid-cols-2'>
-                  <Image src={'/icons/popcorn.png'} height='10' width='20' />
-                  <span className='ml-1 text-sm font-medium text-gray-900'>
-                    {movie?.ratings}
-                  </span>
-                </div>
+                <span className='text-sm font-semibold'>
+                  {movie?.certificate}
+                </span>
               </div>
             </div>
           ))}
