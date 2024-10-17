@@ -48,17 +48,7 @@ const movieSchema = new mongoose.Schema(
     },
     certificate: {
       type: String
-    },
-    movieTimings: [
-      {
-        date: {
-          type: String
-        },
-        time: {
-          type: String
-        }
-      }
-    ]
+    }
   },
   { timestamps: true }
 )
