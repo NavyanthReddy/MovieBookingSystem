@@ -5,11 +5,11 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 export const useSingleMovieDetails = movieid => {
   const { data, error } = useSWR(
-    `/api/movies/moviedetails?movieId=${movieid}`,
+    `/api/movies/moviedetails?id=${movieid}`,
     fetcher
   )
   return {
-    movieDetails: data?.movieDetails,
+    movieDetails: data,
     isLoading: !error && !data,
     isError: error
   }

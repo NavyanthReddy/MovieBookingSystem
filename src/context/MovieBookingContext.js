@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 const MovieBookingContext = createContext()
 
@@ -10,6 +10,63 @@ export function MovieBookingContextProvider ({ children }) {
   const [adultTickets, setAdultTickets] = useState(0)
   const [childTickets, setChildTickets] = useState(0)
   const [seniorTickets, setSeniorTickets] = useState(0)
+
+  const [promotionCode, setPromotionCode] = useState('')
+  const [discountRate, setDiscountRate] = useState(0)
+  const [promotionName, setPromotionName] = useState('')
+  const [totalPrice, setTotalPrice] = useState(0)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedState = localStorage.getItem('movieBookingState')
+      if (savedState) {
+        const parsedState = JSON.parse(savedState)
+
+        setSelectedSeats(parsedState.selectedSeats || [])
+        setSelectedTime(parsedState.selectedTime || null)
+        setSelectedDate(parsedState.selectedDate || null)
+        setMovieDetails(parsedState.movieDetails || null)
+        setAdultTickets(parsedState.adultTickets || 0)
+        setChildTickets(parsedState.childTickets || 0)
+        setSeniorTickets(parsedState.seniorTickets || 0)
+        setPromotionCode(parsedState.promotionCode || '')
+        setDiscountRate(parsedState.discountRate || 0)
+        setPromotionName(parsedState.promotionName || '')
+        setTotalPrice(parsedState.totalPrice || 0)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stateToSave = {
+        selectedSeats,
+        selectedTime,
+        selectedDate,
+        movieDetails,
+        adultTickets,
+        childTickets,
+        seniorTickets,
+        promotionCode,
+        discountRate,
+        promotionName,
+        totalPrice
+      }
+      localStorage.setItem('movieBookingState', JSON.stringify(stateToSave))
+    }
+  }, [
+    selectedSeats,
+    selectedTime,
+    selectedDate,
+    movieDetails,
+    adultTickets,
+    childTickets,
+    seniorTickets,
+    promotionCode,
+    discountRate,
+    promotionName,
+    totalPrice
+  ])
 
   const state = {
     selectedSeats,
@@ -25,7 +82,15 @@ export function MovieBookingContextProvider ({ children }) {
     childTickets,
     setChildTickets,
     seniorTickets,
-    setSeniorTickets
+    setSeniorTickets,
+    promotionCode,
+    setPromotionCode,
+    discountRate,
+    setDiscountRate,
+    promotionName,
+    setPromotionName,
+    totalPrice,
+    setTotalPrice
   }
 
   return (

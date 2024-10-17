@@ -1,15 +1,25 @@
 import React from 'react'
-import { useMovieBookingContext } from '../../context/MovieBookingContext'
 
-export const Seat = ({ row, seat, handleSeatClick, bookedSeats }) => {
-  const { selectedSeats } = useMovieBookingContext()
-  const seatId = `${row}${seat}`
-  const isSelected = selectedSeats.includes(seatId)
-  const isBooked = bookedSeats.includes(seatId)
+export const Seat = ({
+  seatId,
+  handleSeatClick,
+  bookedSeats,
+  selectedSeats
+}) => {
+  const seatIdNormalized = seatId.trim().toUpperCase()
+  const isBooked = bookedSeats.includes(seatIdNormalized)
+  const isSelected = selectedSeats.includes(seatIdNormalized)
+
+  const handleClick = () => {
+    if (!isBooked) {
+      handleSeatClick(seatId)
+    }
+  }
 
   return (
-    <div
-      onClick={() => handleSeatClick(row, seat)}
+    <button
+      onClick={handleClick}
+      disabled={isBooked}
       className={`w-12 h-12 rounded-lg flex items-center justify-center cursor-pointer ${
         isBooked
           ? 'bg-red-500 cursor-not-allowed'
@@ -19,6 +29,6 @@ export const Seat = ({ row, seat, handleSeatClick, bookedSeats }) => {
       }`}
     >
       {seatId}
-    </div>
+    </button>
   )
 }

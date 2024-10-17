@@ -17,8 +17,7 @@ const movieTimingSchema = new mongoose.Schema(
     },
     seatsBooked: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'seats'
+        type: String
       }
     ]
   },

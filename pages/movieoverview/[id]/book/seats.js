@@ -1,12 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Seating } from '../../../../src/components/Movie/Seating'
 import { useMovieBookingContext } from '../../../../src/context/MovieBookingContext'
 import Link from 'next/link'
 import Summary from '../../../../src/components/Movie/Summary'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const Seats = () => {
-  const { selectedSeats, movieDetails, selectedDate, selectedTime } =
-    useMovieBookingContext()
+  const router = useRouter()
+  const { movieDetails, selectedDate, selectedTime } = useMovieBookingContext()
+
+  const [seatLayout, setSeatLayout] = useState([])
+  const [bookedSeats, setBookedSeats] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Redirect to home if essential data is missing
+    if (!movieDetails || !selectedDate || !selectedTime) {
+      router.push('/')
+      return
+    }
+
+    const fetchSeatData = async () => {
+      try {
+        const response = await axios.get(
+          `/api/seats/${movieDetails._id}?movieId=${movieDetails._id}&date=${selectedDate}&time=${selectedTime}`
+        )
+
+        let { seatLayout, bookedSeats } = response.data
+
+        // Normalize seat IDs
+        seatLayout = seatLayout.map(seatId => seatId.trim().toUpperCase())
+        bookedSeats = bookedSeats.map(seatId => seatId.trim().toUpperCase())
+
+        setSeatLayout(seatLayout)
+        setBookedSeats(bookedSeats)
+      } catch (error) {
+        console.error('Error fetching seat data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSeatData()
+  }, [movieDetails, selectedDate, selectedTime, router])
+
+  if (loading) return <div>Loading...</div>
 
   return (
     <div className='bg-gray-900 py-14'>
@@ -16,7 +55,7 @@ const Seats = () => {
             <div className='text-center w-full overflow-hidden rounded-lg bg-gray-800 ring-1 ring-white/15 max-lg:rounded-t-[2rem] lg:rounded-tl-[2rem]'>
               <div className='p-10'>
                 <h3 className='text-md uppercase tracking-wider font-semibold text-gray-400'>
-                  Your Seats
+                  Select Your Seats
                 </h3>
 
                 <div className='relative w-full flex justify-center my-6'>
@@ -38,7 +77,7 @@ const Seats = () => {
                   </div>
                 </div>
 
-                <Seating />
+                <Seating seatLayout={seatLayout} bookedSeats={bookedSeats} />
               </div>
             </div>
           </div>
@@ -50,7 +89,7 @@ const Seats = () => {
                 <Link href={`/movieoverview/${movieDetails?._id}/book/tickets`}>
                   <button
                     type='button'
-                    className='w-full rounded-md bg-indigo-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'
+                    className='w-full rounded-md bg-indigo-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400'
                   >
                     Book Now
                   </button>

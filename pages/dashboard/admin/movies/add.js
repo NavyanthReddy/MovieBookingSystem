@@ -32,12 +32,7 @@ const MovieAdd = () => {
   const [title, setTitle] = useState('')
   const [duration, setDuration] = useState('')
   const [trailer, setTrailer] = useState('')
-  const [movieTimings, setMovieTimings] = useState([
-    {
-      time: '',
-      date: ''
-    }
-  ])
+  const [movieTimings, setMovieTimings] = useState([])
   const [variations, setVariations] = useState({
     // prices: [],
     cast: []
@@ -67,8 +62,33 @@ const MovieAdd = () => {
   }
 
   const handleAddMovieTiming = e => {
-    const dateTime = e.target.value.split('T')
-    const newMovieTiming = { date: dateTime[0], time: dateTime[1] }
+    const dateTimeValue = e.target.value
+
+    if (!dateTimeValue) {
+      return
+    }
+
+    const dateTime = dateTimeValue.split('T')
+    if (dateTime.length < 2) {
+      return
+    }
+
+    const [date, time] = dateTime
+
+    if (!date || !time) {
+      return
+    }
+
+    const newMovieTiming = { date, time }
+
+    const timingExists = movieTimings.some(
+      timing => timing.date === date && timing.time === time
+    )
+
+    if (timingExists) {
+      toast.warn('This timing has already been added.')
+      return
+    }
 
     setMovieTimings(prevTimings => [...prevTimings, newMovieTiming])
   }
@@ -96,19 +116,25 @@ const MovieAdd = () => {
       status: status?.name,
       movieTimings
     }
-    console.log(movieDetails)
 
-    const {
-      data: { message }
-    } = await axios.post(`/api/movies/moviedetails`, movieDetails)
+    try {
+      const response = await axios.post(
+        `/api/movies/moviedetails`,
+        movieDetails
+      )
+      const { message } = response.data
 
-    setLoading({ type: 'add', status: false })
+      setLoading({ type: 'add', status: false })
 
-    if (message == 'Success! Movie Created') {
-      toast.success(message, { toastId: message })
-      router.push('/dashboard/admin/movies')
-    } else {
-      toast.error(message, { toastId: message })
+      if (message === 'Success! Movie and Timings Created') {
+        toast.success(message)
+        router.push('/dashboard/admin/movies')
+      } else {
+        toast.error(message)
+      }
+    } catch (error) {
+      setLoading({ type: 'add', status: false })
+      toast.error(error.response?.data?.message || error.message)
     }
   }
 
@@ -116,6 +142,9 @@ const MovieAdd = () => {
     <div>
       <Header heading={'Add Movie'} />
       <main className='relative -mt-40'>
+        <button onClick={() => setLoading({ type: '', status: false })}>
+          Click
+        </button>
         <div className='space-y-6 max-w-7xl mx-auto py-8'>
           <div className='bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6'>
             <div className='mb-5 md:col-span-1'>

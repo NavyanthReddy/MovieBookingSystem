@@ -5,7 +5,6 @@ import { useMovieBookingContext } from '../../../../src/context/MovieBookingCont
 import Summary from '../../../../src/components/Movie/Summary'
 
 const Tickets = () => {
-  const { movieDetails, selectedDate, selectedTime } = useMovieBookingContext()
   return (
     <div className='bg-gray-900 py-14'>
       <div className='mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8'>

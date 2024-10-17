@@ -31,6 +31,7 @@ function classNames (...classes) {
 
 const MovieOverviewSlug = ({ movieId, user }) => {
   const { movieDetails, loading } = useSingleMovieDetails(movieId)
+  console.log(movieDetails)
   const { reviews, isReviewLoading } = useReviewDetails(movieDetails?._id)
   const { setSelectedTime, setSelectedDate, setMovieDetails } =
     useMovieBookingContext()
@@ -48,18 +49,19 @@ const MovieOverviewSlug = ({ movieId, user }) => {
   }
 
   useEffect(() => {
-    if (isReviewLoading) return
+    if (isReviewLoading || !reviews) return
     let totalRating = 0
     reviews.forEach(x => {
       totalRating += parseInt(x.rating)
     })
     if (reviews.length !== 0) setAverageRating(totalRating / reviews.length)
-  }, [])
+  }, [reviews, isReviewLoading])
 
   useEffect(() => {
     if (movieDetails?.movieTimings) {
       const groupByDate = movieDetails.movieTimings.reduce((acc, current) => {
-        const { date, time } = current
+        const date = new Date(current.date).toISOString().split('T')[0]
+        const time = current.time
 
         if (!acc[date]) {
           acc[date] = []
@@ -104,7 +106,7 @@ const MovieOverviewSlug = ({ movieId, user }) => {
 
   // Function to check if the showtime has passed
   const isShowtimePassed = (date, time) => {
-    const showtime = new Date(`${date}T${time}:00`) // Combine date and time
+    const showtime = new Date(`${date}T${time}`)
     const now = new Date()
     return showtime < now
   }
@@ -180,6 +182,7 @@ const MovieOverviewSlug = ({ movieId, user }) => {
         </ul>
       </div>
 
+      {/* Show Timings and Reviews Tabs */}
       <div className='max-w-7xl mx-auto mt-6 sm:mt-2 2xl:mt-5'>
         <div className='border-b border-gray-200'>
           <div className='px-4 sm:px-6 lg:px-8'>
@@ -219,10 +222,10 @@ const MovieOverviewSlug = ({ movieId, user }) => {
           <div className='divide-y divide-gray-200'>
             {groupedTimingsArray.map(movie => (
               <div key={movie.date} className='flex items-center py-4 px-6'>
-                {/* Movie Title on the Left */}
+                {/* Date Header */}
                 <div className='w-1/3 text-left'>
                   <h3 className='font-bold text-md'>
-                    {new Date(movie?.date).toLocaleDateString('en-US', {
+                    {new Date(movie.date).toLocaleDateString('en-US', {
                       month: 'long',
                       day: 'numeric',
                       year: 'numeric'
@@ -230,17 +233,25 @@ const MovieOverviewSlug = ({ movieId, user }) => {
                   </h3>
                 </div>
 
+                {/* Showtimes */}
                 <div className='w-2/3 flex flex-wrap gap-3 justify-start'>
-                  {console.log(movie)}
                   {movie.times.map(time => {
                     const passed = isShowtimePassed(movie.date, time)
                     return (
                       <Link
-                        key={time}
-                        href={`/movieoverview/${movieDetails?._id}/book/seats`}
-                        onClick={() =>
-                          handleSelectShowtimeClick(moviedate, time)
+                        key={`${movie.date}-${time}`}
+                        href={
+                          passed
+                            ? '#'
+                            : `/movieoverview/${movieDetails?._id}/book/seats`
                         }
+                        onClick={e => {
+                          if (passed) {
+                            e.preventDefault()
+                          } else {
+                            handleSelectShowtimeClick(movie.date, time)
+                          }
+                        }}
                       >
                         <button
                           className={`px-4 py-2 border rounded ${
