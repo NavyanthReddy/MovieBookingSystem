@@ -8,8 +8,6 @@ const Seats = () => {
   const { selectedSeats, movieDetails, selectedDate, selectedTime } =
     useMovieBookingContext()
 
-  console.log(movieDetails)
-
   return (
     <div className='bg-gray-900 py-14'>
       <div className='mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8'>

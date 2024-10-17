@@ -1,22 +1,28 @@
+import mongoose from 'mongoose'
+
 const seatBookingSchema = new mongoose.Schema(
   {
-    showTime: {
+    seatNumbers: [
+      {
+        type: String,
+        required: true
+      }
+    ],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users',
+      required: true
+    },
+    movieTiming: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'movietimings',
       required: true
     },
-    seatNumber: {
-      type: [String],
-      required: true
-    },
-    customerName: {
-      type: String,
-      required: true,
-      trim: true
-    },
     bookingDate: {
-      type: Date,
-      default: Date.now
+      type: Date
+    },
+    paymentStatus: {
+      type: String
     }
   },
   { timestamps: true }

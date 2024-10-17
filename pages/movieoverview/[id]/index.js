@@ -231,6 +231,7 @@ const MovieOverviewSlug = ({ movieId, user }) => {
                 </div>
 
                 <div className='w-2/3 flex flex-wrap gap-3 justify-start'>
+                  {console.log(movie)}
                   {movie.times.map(time => {
                     const passed = isShowtimePassed(movie.date, time)
                     return (
@@ -238,7 +239,7 @@ const MovieOverviewSlug = ({ movieId, user }) => {
                         key={time}
                         href={`/movieoverview/${movieDetails?._id}/book/seats`}
                         onClick={() =>
-                          handleSelectShowtimeClick(movie?.date, time)
+                          handleSelectShowtimeClick(moviedate, time)
                         }
                       >
                         <button
