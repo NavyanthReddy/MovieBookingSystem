@@ -4,10 +4,28 @@ const MovieBookingContext = createContext()
 
 export function MovieBookingContextProvider ({ children }) {
   const [selectedSeats, setSelectedSeats] = useState([])
+  const [selectedTime, setSelectedTime] = useState(null)
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [movieDetails, setMovieDetails] = useState(null)
+  const [adultTickets, setAdultTickets] = useState(0)
+  const [childTickets, setChildTickets] = useState(0)
+  const [seniorTickets, setSeniorTickets] = useState(0)
 
   const state = {
     selectedSeats,
-    setSelectedSeats
+    setSelectedSeats,
+    selectedTime,
+    setSelectedTime,
+    selectedDate,
+    setSelectedDate,
+    movieDetails,
+    setMovieDetails,
+    adultTickets,
+    setAdultTickets,
+    childTickets,
+    setChildTickets,
+    seniorTickets,
+    setSeniorTickets
   }
 
   return (

@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { Seating } from '../../../../src/components/Movie/Seating'
 import { useMovieBookingContext } from '../../../../src/context/MovieBookingContext'
 import Link from 'next/link'
+import Summary from '../../../../src/components/Movie/Summary'
 
 const Seats = () => {
-  const { selectedSeats } = useMovieBookingContext()
+  const { selectedSeats, movieDetails, selectedDate, selectedTime } =
+    useMovieBookingContext()
+
+  console.log(movieDetails)
 
   return (
     <div className='bg-gray-900 py-14'>
@@ -43,25 +47,16 @@ const Seats = () => {
           <div className='flex p-px lg:col-span-2'>
             <div className='w-full overflow-hidden rounded-lg bg-gray-800 ring-1 ring-white/15 lg:rounded-tr-[2rem]'>
               <div className='p-10'>
-                <h3 className='text-sm/4 font-semibold text-gray-400'>
-                  Integrations
-                </h3>
-                {selectedSeats.length > 0 && (
-                  <div className='mt-8 text-center text-white'>
-                    <p className='text-lg'>
-                      Selected {selectedSeats.length} Seats:{' '}
-                      <span className='font-bold'>
-                        {selectedSeats.join(', ')}
-                      </span>
-                    </p>
-                    <Link
-                      href={`/movieoverview/1/book/tickets`}
-                      className='mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg'
-                    >
-                      Book Now
-                    </Link>
-                  </div>
-                )}
+                <Summary />
+
+                <Link href={`/movieoverview/${movieDetails?._id}/book/tickets`}>
+                  <button
+                    type='button'
+                    className='w-full rounded-md bg-indigo-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'
+                  >
+                    Book Now
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

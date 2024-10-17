@@ -51,7 +51,7 @@ export const Variations = ({
           </div>
         </div>
         <div className='flex flex-col w-full'>
-          {extraOptions.map(option => (
+          {extraOptions?.map(option => (
             <div
               key={option.text}
               className='flex justify-between items-center border-2 my-1 px-4 py-2 rounded-md'

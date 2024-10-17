@@ -18,9 +18,10 @@ import { useRouter } from 'next/router'
 import { getLoginSession } from '../../../../../src/lib/auth'
 import { findUser } from '../../../../../src/lib/user'
 import { mutate } from 'swr'
+import { useSingleMovieDetails } from '../../../../../src/hooks/useSingleMovieDetails'
 
-const MovieEdit = ({ movieDetails }) => {
-  console.log(movieDetails)
+const MovieEdit = ({ movieId }) => {
+  const { movieDetails } = useSingleMovieDetails(movieId)
   const router = useRouter()
   const [selectedCertificate, setSelectedCertificate] = useState(
     getSelected(certificateOptions, movieDetails?.certificate)
@@ -46,6 +47,29 @@ const MovieEdit = ({ movieDetails }) => {
     // prices: [],
     cast: movieDetails?.cast
   })
+
+  useEffect(() => {
+    if (movieDetails) {
+      setSelectedCertificate(
+        getSelected(certificateOptions, movieDetails.certificate)
+      )
+      setStatus(getSelected(statusOptions, movieDetails.status))
+      setDescription(movieDetails.description)
+      setLogo(movieDetails.image || '')
+      setFrom(movieDetails.movieStartDate || new Date().toISOString())
+      setTo(movieDetails.movieEndDate || new Date().toISOString())
+      setGenre(movieDetails.genre || [])
+      setTitle(movieDetails.title || '')
+      setDuration(movieDetails.duration || 0)
+      setTrailer(movieDetails.trailer || '')
+      setMovieTimings(movieDetails.movieTimings || [])
+      setVariations({ cast: movieDetails.cast || [] })
+    }
+  }, [movieDetails])
+
+  useEffect(() => {
+    getSelected(statusOptions, movieDetails?.status)
+  }, [movieDetails, status])
 
   const uploadFileHandler = async (e, type) => {
     const file = e.target.files[0]
@@ -295,9 +319,10 @@ const MovieEdit = ({ movieDetails }) => {
                       <input
                         type='checkbox'
                         className='h-4 w-4 mr-1 text-indigo-600 border-gray-300 rounded outline-none'
-                        checked={genre.length === genreOptions.length}
+                        checked={genre?.length === genreOptions.length}
                         onChange={() => {
-                          if (genre.length === genreOptions.length) setGenre([])
+                          if (genre?.length === genreOptions.length)
+                            setGenre([])
                           else setGenre([...genreOptions.map(x => x.name)])
                         }}
                       />
@@ -400,7 +425,7 @@ const MovieEdit = ({ movieDetails }) => {
                     />
                   </div>
                   <ul className='mt-4 space-y-2'>
-                    {movieTimings.map(
+                    {movieTimings?.map(
                       (timing, index) =>
                         timing.date &&
                         timing.time && (
@@ -476,13 +501,9 @@ export const getServerSideProps = async ({ req, res, query }) => {
     }
   }
 
-  const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_HOST_URL}/movies/moviedetails?movieId=${query.id}`
-  )
-
   return {
     props: {
-      movieDetails: data?.movieDetails
+      movieId: query.id
     }
   }
 }

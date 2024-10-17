@@ -5,6 +5,9 @@ import { useModalContext } from '../../context/ModalContext'
 import { DeleteForm } from '../ModalForms/DeleteForm'
 import { DeletePromotionForm } from '../ModalForms/DeletePromotionForm'
 import { DeleteUserForm } from '../ModalForms/DeleteUserForm'
+import { CardAddForm } from '../ModalForms/CardAddForm'
+import { CardEditForm } from '../ModalForms/CardEditForm'
+import { CardDeleteForm } from '../ModalForms/CardDeleteForm'
 
 export const Modal = () => {
   const { isOpen, closeModal, form, setLoading } = useModalContext()
@@ -55,7 +58,9 @@ export const Modal = () => {
                 className={`${
                   form === 'pickTemplate' ? 'max-w-6xl' : 'w-full max-w-2xl'
                 } relative inline-block p-6 my-8 overflow-hidden text-left align-middle transition-all transform ${
-                  form === 'paymentForm' ? 'bg-white max-w-xl' : 'bg-gray-800'
+                  form === 'CardAddForm' || form === 'CardEditForm'
+                    ? 'bg-white max-w-4xl'
+                    : 'bg-gray-800'
                 } shadow-xl rounded-md`}
               >
                 <button
@@ -71,6 +76,9 @@ export const Modal = () => {
                 {form === 'DeleteFormModal' && <DeleteForm />}
                 {form === 'DeletePromotionFormModal' && <DeletePromotionForm />}
                 {form === 'DeleteUserFormModal' && <DeleteUserForm />}
+                {form === 'CardAddForm' && <CardAddForm />}
+                {form === 'CardEditForm' && <CardEditForm />}
+                {form === 'CardDeleteForm' && <CardDeleteForm />}
               </div>
             </Transition.Child>
           </div>

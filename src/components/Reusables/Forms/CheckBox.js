@@ -13,9 +13,9 @@ export const CheckBox = ({ options, setCheckedOptions, checkedOptions }) => {
                     id={category._id}
                     name={category.title}
                     type='checkbox'
-                    checked={checkedOptions.includes(category._id)}
+                    checked={checkedOptions?.includes(category._id)}
                     onChange={e => {
-                      const id = checkedOptions.indexOf(category._id)
+                      const id = checkedOptions?.indexOf(category._id)
                       if (id == -1)
                         setCheckedOptions([...checkedOptions, category._id])
                       else {

@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import { mutate } from 'swr'
 import { ReviewCard } from '../../../src/components/Reusables/ReviewCard'
 import { useReviewDetails } from '../../../src/hooks/useReviewDetails'
+import { useMovieBookingContext } from '../../../src/context/MovieBookingContext'
 
 const onPlayerReady = event => {
   event.target.pauseVideo()
@@ -31,12 +32,20 @@ function classNames (...classes) {
 const MovieOverviewSlug = ({ movieId, user }) => {
   const { movieDetails, loading } = useSingleMovieDetails(movieId)
   const { reviews, isReviewLoading } = useReviewDetails(movieDetails?._id)
+  const { setSelectedTime, setSelectedDate, setMovieDetails } =
+    useMovieBookingContext()
   const [showTimings, setShowTimings] = useState(true)
   const [groupedTimingsArray, setGroupedTimingsArray] = useState([])
 
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [averageRating, setAverageRating] = useState(0)
+
+  const handleSelectShowtimeClick = (date, time) => {
+    setSelectedDate(date)
+    setSelectedTime(time)
+    setMovieDetails(movieDetails)
+  }
 
   useEffect(() => {
     if (isReviewLoading) return
@@ -225,17 +234,24 @@ const MovieOverviewSlug = ({ movieId, user }) => {
                   {movie.times.map(time => {
                     const passed = isShowtimePassed(movie.date, time)
                     return (
-                      <button
+                      <Link
                         key={time}
-                        className={`px-4 py-2 border rounded ${
-                          passed
-                            ? 'border-gray-400 text-gray-400 cursor-not-allowed'
-                            : 'border-indigo-400 text-indigo-700 hover:bg-indigo-50'
-                        }`}
-                        disabled={passed}
+                        href={`/movieoverview/${movieDetails?._id}/book/seats`}
+                        onClick={() =>
+                          handleSelectShowtimeClick(movie?.date, time)
+                        }
                       >
-                        {time}
-                      </button>
+                        <button
+                          className={`px-4 py-2 border rounded ${
+                            passed
+                              ? 'border-gray-400 text-gray-400 cursor-not-allowed'
+                              : 'border-indigo-400 text-indigo-700 hover:bg-indigo-50'
+                          }`}
+                          disabled={passed}
+                        >
+                          {time}
+                        </button>
+                      </Link>
                     )
                   })}
                 </div>

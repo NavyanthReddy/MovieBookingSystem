@@ -2,10 +2,15 @@ import { useState } from 'react'
 import { useMovieBookingContext } from '../../context/MovieBookingContext'
 
 export const TicketSelection = () => {
-  const { selectedSeats } = useMovieBookingContext()
-  const [adultTickets, setAdultTickets] = useState(0)
-  const [childTickets, setChildTickets] = useState(0)
-  const [seniorTickets, setSeniorTickets] = useState(0)
+  const {
+    selectedSeats,
+    adultTickets,
+    setAdultTickets,
+    childTickets,
+    setChildTickets,
+    seniorTickets,
+    setSeniorTickets
+  } = useMovieBookingContext()
 
   const totalTickets = adultTickets + childTickets + seniorTickets
 
