@@ -1,5 +1,4 @@
 import React from 'react'
-
 export const CheckBox = ({ options, setCheckedOptions, checkedOptions }) => {
   return (
     <>
