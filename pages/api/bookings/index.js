@@ -57,7 +57,6 @@ const createSeatBooking = async (req, res) => {
 
     const dateObject = new Date(date)
 
-    // Find or create the MovieTiming document
     let movieTiming = await MovieTiming.findOne({
       movie: movieId,
       date: dateObject,
