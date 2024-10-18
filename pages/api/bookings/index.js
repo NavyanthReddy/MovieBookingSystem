@@ -64,7 +64,6 @@ const createSeatBooking = async (req, res) => {
     })
 
     if (!movieTiming) {
-      // Create a new MovieTiming document
       movieTiming = new MovieTiming({
         movie: movieId,
         date: dateObject,
