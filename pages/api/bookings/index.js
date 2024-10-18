@@ -94,7 +94,6 @@ const createSeatBooking = async (req, res) => {
       })
     }
 
-    // Create the SeatBooking document
     const seatBooking = new SeatBooking({
       seatNumbers: normalizedSeatNumbers,
       user: userId,
@@ -105,7 +104,6 @@ const createSeatBooking = async (req, res) => {
 
     await seatBooking.save()
 
-    // Update seatsBooked in MovieTiming
     await MovieTiming.updateOne(
       { _id: movieTiming._id },
       { $addToSet: { seatsBooked: { $each: normalizedSeatNumbers } } }
