@@ -19,3 +19,4 @@ A full-stack movie booking web application that allows users to browse movies, v
 
 This project demonstrates modern web development practices and showcases dynamic data handling, user interaction, and full CRUD operations.
 
+<img width="1470" alt="Screenshot 2025-04-15 at 9 59 14 PM" src="https://github.com/user-attachments/assets/89f4c8c5-35fc-452b-8901-a74cf9d264b8" />
